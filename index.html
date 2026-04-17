@@ -738,6 +738,8 @@ nav.scrolled{background:rgba(10,11,12,.88);border-bottom:1px solid var(--border)
 .con-form{display:flex;flex-direction:column;gap:15px}
 .form-warn{display:none;padding:10px 12px;border:1px solid rgba(255,184,107,.35);background:rgba(255,184,107,.09);border-radius:var(--r);font-family:var(--font-m);font-size:10.5px;letter-spacing:.02em;color:#ffd3a1}
 .form-warn.show{display:block}
+.form-ok{display:none;padding:10px 12px;border:1px solid rgba(110,245,206,.35);background:rgba(110,245,206,.09);border-radius:var(--r);font-family:var(--font-m);font-size:10.5px;letter-spacing:.02em;color:#b9ffea}
+.form-ok.show{display:block}
 .fg{display:flex;flex-direction:column;gap:7px}
 .fg label{font-family:var(--font-m);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3)}
 .fg input,.fg textarea{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;font-family:var(--font-m);font-size:12.5px;color:var(--text);outline:none;transition:border-color .22s;resize:none}
@@ -1105,13 +1107,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
       </div>
     </div>
     <form id="contact-form" class="con-form reveal d2" action="https://formsubmit.co/towater@gmail.com" method="POST">
+      <p id="form-ok" class="form-ok" role="status" aria-live="polite">Thanks, your message was sent. I will get back to you soon.</p>
       <p id="form-warn" class="form-warn" role="alert">Email form needs a web server. Open this page from your live site, or run a local server (for example: python3 -m http.server).</p>
       <div class="fg"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required></div>
       <div class="fg"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="your@email.com" required></div>
       <div class="fg"><label for="message">Message</label><textarea id="message" name="message" rows="5" placeholder="What are you building or hiring for?" required></textarea></div>
       <input type="hidden" name="_subject" value="New portfolio contact form message">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://jamietowater.github.io/#contact">
+      <input type="hidden" name="_next" value="https://jamietowater.github.io/?submitted=1#contact">
       <button type="submit" class="btn btn-p" style="align-self:flex-start">Start the conversation</button>
     </form>
   </div>
@@ -1484,6 +1487,19 @@ document.getElementById('hero').addEventListener('mousemove',e=>{
 /* CONTACT FORM LOCAL FILE GUARD */
 const contactForm=document.getElementById('contact-form');
 const formWarn=document.getElementById('form-warn');
+const formOk=document.getElementById('form-ok');
+
+if(formOk){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('submitted')==='1'){
+    formOk.classList.add('show');
+    params.delete('submitted');
+    const qs=params.toString();
+    const cleanUrl=`${window.location.pathname}${qs?`?${qs}`:''}${window.location.hash||'#contact'}`;
+    window.history.replaceState({},'',cleanUrl);
+  }
+}
+
 if(contactForm&&formWarn&&window.location.protocol==='file:'){
   formWarn.classList.add('show');
   contactForm.addEventListener('submit',e=>{
