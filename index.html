@@ -632,6 +632,7 @@ nav.scrolled{background:rgba(10,11,12,.88);border-bottom:1px solid var(--border)
 .pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column}
 .pcard:hover{border-color:rgba(102,231,255,.42);transform:translateY(-3px);box-shadow:0 14px 42px rgba(0,0,0,.42)}
 .pcard.feat{grid-column:span 2}
+.pcard.wide{grid-column:1 / -1}
 .card-bar{height:2px;background:linear-gradient(90deg,var(--accent),transparent)}
 .card-bar.blue{background:linear-gradient(90deg,var(--blue),transparent)}
 .card-bar.purple{background:linear-gradient(90deg,var(--purple),transparent)}
@@ -892,7 +893,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
       <div class="section-label">Projects</div>
       <h2>What I’m building.</h2>
     </div>
-    <div class="proj-ct">07 featured highlights</div>
+    <div class="proj-ct">06 featured highlights</div>
   </div>
   <div class="proj-grid">
 
@@ -988,7 +989,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
       </div></div>
     </div>
 
-    <div class="pcard reveal d4">
+    <div class="pcard wide reveal d4">
       <div class="card-bar blue"></div>
       <div class="card-top"><div class="card-ico">🪷</div><span class="card-tag tag-fpv">Media / Ideas</span></div>
       <div class="card-body">
