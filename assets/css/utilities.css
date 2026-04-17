@@ -1,0 +1,24 @@
+/* ANIMATIONS & KEYFRAMES */
+@keyframes fU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes ppSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes sbpulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* SECTION COMMON */
+.section-label{font-family:var(--font-m);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.section-label::after{content:'';width:48px;height:1px;background:var(--accent);opacity:.4}
+
+/* SCROLL REVEALS */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}
+.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}
+.d4{transition-delay:.4s}
+
+/* STATUS BAR */
+.status-bar{position:fixed;bottom:0;left:0;right:0;height:22px;background:rgba(10,11,12,.95);border-top:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 14px;gap:18px;backdrop-filter:blur(8px)}
+.si{display:flex;align-items:center;gap:5px;font-family:var(--font-m);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:sbpulse 2.8s ease-in-out infinite}
+.sdot.amber{background:var(--accent)}
+.si-r{margin-left:auto}

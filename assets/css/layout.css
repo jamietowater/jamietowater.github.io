@@ -1,0 +1,67 @@
+/* SECTION LAYOUTS */
+
+/* HERO SECTION */
+#hero{position:relative;height:100vh;min-height:680px;display:flex;flex-direction:column;justify-content:center;padding:0 80px;overflow:hidden;background:radial-gradient(900px 460px at 78% 18%,rgba(122,184,255,.09),transparent 62%),radial-gradient(680px 380px at 16% 86%,rgba(103,240,212,.05),transparent 66%),var(--bg)}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-noise{position:absolute;inset:0;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025}
+.hero-content{position:relative;z-index:1;max-width:var(--maxw)}
+.hero-pre{font-family:var(--font-m);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;opacity:0;animation:fU .8s .25s forwards}
+.hero-name{font-family:var(--font-d);font-size:clamp(48px,8.5vw,112px);font-weight:800;line-height:.9;letter-spacing:-.03em;color:var(--text);margin-bottom:24px;opacity:0;animation:fU .9s .45s forwards}
+.hero-name em{display:block;font-style:normal;color:transparent;-webkit-text-stroke:1.5px rgba(218,215,210,.18)}
+.hero-tag{font-family:var(--font-m);font-size:13px;color:var(--text2);margin-bottom:44px;min-height:20px;display:flex;align-items:center;opacity:0;animation:fU .9s .75s forwards}
+.tw-cursor{display:inline-block;width:2px;height:.9em;background:var(--accent);vertical-align:text-bottom;animation:blink 1s step-end infinite}
+.hero-cta{display:flex;gap:14px;opacity:0;animation:fU .9s 1.05s forwards}
+.hero-scroll{position:absolute;bottom:36px;left:80px;font-family:var(--font-m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:12px;opacity:0;animation:fU .9s 1.5s forwards}
+.hero-scroll::before{content:'';width:1px;height:38px;background:linear-gradient(to bottom,transparent,var(--text3))}
+.hero-stats{position:absolute;right:80px;bottom:36px;display:flex;flex-direction:column;gap:22px;text-align:right;opacity:0;animation:fU .9s 1.3s forwards}
+.stat-v{font-family:var(--font-d);font-size:30px;font-weight:700;color:var(--text);line-height:1}
+.stat-l{font-family:var(--font-m);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-top:2px}
+
+/* ABOUT SECTION */
+#about{background:radial-gradient(720px 380px at 12% 10%,rgba(122,184,255,.06),transparent 64%),var(--bg2);padding:var(--sp) 80px}
+.about-in{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start}
+.about-left h2{font-family:var(--font-d);font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:24px;line-height:1.05}
+.about-left p{color:var(--text2);margin-bottom:16px;font-size:15.5px;line-height:1.82}
+.about-left p strong{color:var(--text);font-weight:500}
+.about-left p em{font-style:italic;color:var(--text)}
+
+/* PROJECTS SECTION */
+#projects{background:radial-gradient(820px 420px at 88% 8%,rgba(102,231,255,.06),transparent 64%),var(--bg);padding:var(--sp) 80px}
+.proj-hdr{max-width:var(--maxw);margin:0 auto 52px;display:flex;justify-content:space-between;align-items:flex-end}
+.proj-hdr h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,48px);font-weight:700;letter-spacing:-.02em;color:var(--text)}
+.proj-ct{font-family:var(--font-m);font-size:10px;color:var(--text3);letter-spacing:.12em}
+.proj-grid{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+/* SKILLS SECTION */
+#skills{background:radial-gradient(760px 420px at 22% 12%,rgba(102,231,255,.05),transparent 65%),var(--bg);padding:var(--sp) 80px}
+.sk-in{max-width:var(--maxw);margin:0 auto}
+.sk-in h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:48px}
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.sk-group-lbl{font-family:var(--font-m);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.sk-list{display:flex;flex-direction:column;gap:7px}
+.sk-item{display:flex;align-items:center;gap:9px;font-family:var(--font-m);font-size:11.5px;color:var(--text2);transition:color .2s}
+.sk-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .2s}
+.sk-item:hover{color:var(--text)}
+.sk-item:hover::before{background:var(--accent)}
+
+/* INTERESTS SECTION */
+#interests{background:radial-gradient(760px 420px at 82% 16%,rgba(122,184,255,.05),transparent 65%),var(--bg2);padding:var(--sp) 80px}
+.int-in{max-width:var(--maxw);margin:0 auto}
+.int-in h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:48px}
+.int-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+
+/* CONTACT SECTION */
+#contact{background:radial-gradient(760px 420px at 18% 14%,rgba(103,240,212,.05),transparent 65%),var(--bg);padding:var(--sp) 80px}
+.con-in{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.con-left h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:18px}
+.con-left p{color:var(--text2);font-size:15px;line-height:1.8;margin-bottom:28px}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80px;display:flex;justify-content:space-between;align-items:center}
+.ft-txt{font-family:var(--font-m);font-size:10px;color:var(--text3);letter-spacing:.05em}
+.ft-links{display:flex;gap:22px}
+.ft-links a{font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.ft-links a:hover{color:var(--accent)}
+
+
+

@@ -1,0 +1,27 @@
+/* RESPONSIVE */
+@media(max-width:960px){
+  :root{--sp:72px}
+  #hero,#about,#projects,#skills,#interests,#contact,footer,#sphere-sec{padding-left:24px;padding-right:24px}
+  .hero-stats,.hero-scroll{display:none}
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .about-in,.sph-lay,.con-in{grid-template-columns:1fr;gap:40px}
+  .proj-grid{grid-template-columns:1fr}
+  .pcard.feat{grid-column:span 1}
+  .sph-wrap{width:300px;height:300px}
+  .sk-grid{grid-template-columns:1fr 1fr;gap:20px}
+  .int-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:640px){
+  :root{--sp:58px}
+  #hero,#about,#projects,#skills,#interests,#contact,footer,#sphere-sec{padding-left:16px;padding-right:16px}
+  #hero{min-height:600px}
+  .hero-pre{font-size:9.5px;letter-spacing:.2em}
+  .hero-tag{font-size:11.5px}
+  .proj-grid{gap:14px}
+  .sk-grid{grid-template-columns:1fr}
+  .int-grid{grid-template-columns:repeat(2,1fr)}
+  .sph-wrap{width:260px;height:260px}
+  .status-bar{display:none}
+}
