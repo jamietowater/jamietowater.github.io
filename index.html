@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamie - Builder</title>
+<meta name="description" content="FPV aircraft, ESP32 projects, 3D printing, and embedded electronics. Building things that fly, glow, and compute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0a0e14;
+  --bg-card: #141922;
+  --bg-card-hover: #1a1f2e;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b93a0;
+  --text-muted: #5d6773;
+  --accent: #00d4ff;
+  --accent-glow: rgba(0, 212, 255, 0.15);
+  --border: rgba(134, 144, 156, 0.15);
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 16px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated grid background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+  animation: gridSlide 20s linear infinite;
+}
+
+@keyframes gridSlide {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+/* Radial glow overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 20%, rgba(0, 212, 255, 0.08), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 0 80px;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 880px;
+}
+
+.hero h1 {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero .tagline {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  font-weight: 300;
+}
+
+.hero .bio {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.hero .bio strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.hero-nav {
+  display: flex;
+  gap: 16px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.hero-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero-nav a:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+/* ========== SECTION HEADERS ========== */
+section {
+  padding: 80px 0;
+}
+
+.section-header {
+  margin-bottom: 60px;
+}
+
+.section-header h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.section-header .subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 700px;
+}
+
+/* ========== PROJECT CARDS ========== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px var(--shadow), 0 0 0 1px var(--accent);
+}
+
+.project-card.expanded {
+  grid-column: 1 / -1;
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+}
+
+.card-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.card-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.card-summary {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.expand-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0, 212, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  color: var(--accent);
+}
+
+.project-card:hover .expand-icon {
+  background: rgba(0, 212, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.project-card.expanded .expand-icon {
+  transform: rotate(45deg);
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 24px 20px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  background: rgba(0, 212, 255, 0.08);
+  color: var(--accent);
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  border: 1px solid rgba(0, 212, 255, 0.15);
+}
+
+.card-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card.expanded .card-details {
+  max-height: 2000px;
+}
+
+.card-details-content {
+  padding: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section h4 {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-section p, .detail-section ul {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.detail-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.detail-section li {
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.detail-section li::before {
+  content: "->";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ========== TECH STACK ========== */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.tech-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-family: 'Sora', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.tech-item:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.tech-item .category {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+.footer-credit {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content, .section-header, .project-card, .tech-item {
+  animation: fadeInUp 0.8s ease-out both;
+}
+
+.hero-content { animation-delay: 0.1s; }
+.section-header { animation-delay: 0.2s; }
+.project-card:nth-child(1) { animation-delay: 0.3s; }
+.project-card:nth-child(2) { animation-delay: 0.4s; }
+.project-card:nth-child(3) { animation-delay: 0.5s; }
+.project-card:nth-child(4) { animation-delay: 0.6s; }
+.project-card:nth-child(5) { animation-delay: 0.7s; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  .hero { min-height: 70vh; padding: 80px 0 60px; }
+  section { padding: 60px 0; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Jamie</h1>
+      <p class="tagline">Building things that fly, glow, and compute.</p>
+      <p class="bio">From hands-on problem solving to exploring novel tech. Somewhere between <strong>FPV aircraft</strong>, <strong>ESP32 projects</strong>, <strong>LED systems</strong>, and <strong>3D printing</strong> lies an interest in <strong>zero point energy</strong> and the fundamental mechanics of things that should not work - but do.</p>
+      <p class="bio">Maker, tinkerer, builder. Currently deep in iNav flight controllers, Crossfire telemetry, and Klipper-modded 3D printers.</p>
+      <nav class="hero-nav">
+        <a href="#projects">View Projects</a>
+        <a href="#tech">Tech Stack</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub -></a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="container">
+    <div class="section-header">
+      <h2>Projects</h2>
+      <p class="subtitle">Click any card to expand details. Real-world builds, tested and documented.</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1: AtomRC Dolphin -->
+      <div class="project-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">AtomRC Dolphin FPV Wing</h3>
+            <p class="card-summary">Long-range FPV flying wing build with iNav autonomous flight capabilities</p>
+          </div>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">FPV</span>
+          <span class="tag">iNav</span>
+          <span class="tag">Crossfire</span>
+          <span class="tag">GPS</span>
+        </div>
+        <div class="card-details">
+          <div class="card-details-content">
+            <div class="detail-section">
+              <h4>Overview</h4>
+              <p>AtomRC Dolphin configured as a long-range autonomous FPV platform. iNav flight controller handles waypoint missions, return-to-home, and position hold. TBS Crossfire for extended range control and telemetry.</p>
+            </div>
+            <div class="detail-section">
+              <h4>Key Features</h4>
+              <ul>
+                <li>iNav 7.x with GPS position hold and autonomous missions</li>
+                <li>TBS Crossfire RX for 10km+ range</li>
+                <li>Custom OSD layout with telemetry overlays</li>
+                <li>Tuned PID loops for smooth flight in wind</li>
+                <li>Return-to-home failsafe tested at 3km+ distance</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <h4>Technical Details</h4>
+              <p>Flight controller runs iNav with custom mixer for wing configuration. GPS module provides position data for autonomous flight modes. Crossfire telemetry feeds back battery voltage, RSSI, GPS coordinates, and flight mode to ground station. OSD configured to display critical flight data on FPV feed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: ESP32 Ground Station -->
+      <div class="project-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">ESP32 Crossfire Ground Station</h3>
+            <p class="card-summary">Real-time telemetry receiver and display for Crossfire RC systems</p>
+          </div>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">ESP32</span>
+          <span class="tag">Crossfire</span>
+          <span class="tag">CRSF Protocol</span>
+          <span class="tag">OLED</span>
+        </div>
+        <div class="card-details">
+          <div class="card-details-content">
+            <div class="detail-section">
+              <h4>Overview</h4>
+              <p>Custom-built ground station using ESP32 to receive and decode Crossfire (CRSF) telemetry data. Displays real-time aircraft position, battery status, RSSI, and flight metrics on an OLED screen. Acts as a backup telemetry monitor during long-range flights.</p>
+            </div>
+            <div class="detail-section">
+              <h4>Key Features</h4>
+              <ul>
+                <li>Decodes CRSF telemetry packets (GPS, voltage, current, RSSI)</li>
+                <li>128x64 OLED display with multi-screen layout</li>
+                <li>Data logging to SD card for post-flight analysis</li>
+                <li>Low-voltage buzzer alerts</li>
+                <li>Powered by 18650 battery with USB-C charging</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <h4>Technical Details</h4>
+              <p>ESP32 UART receives CRSF protocol frames at 420kbaud. Custom parser extracts telemetry fields and updates display at 10Hz. Data is timestamped and written to CSV on SD card. Low-power mode extends battery life to 8+ hours of continuous monitoring.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3: WS2812 LED Controller -->
+      <div class="project-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">WS2812 LED Animation System</h3>
+            <p class="card-summary">Custom addressable LED controller with animation engine and wireless control</p>
+          </div>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">ESP32</span>
+          <span class="tag">WS2812</span>
+          <span class="tag">FastLED</span>
+          <span class="tag">WiFi</span>
+        </div>
+        <div class="card-details">
+          <div class="card-details-content">
+            <div class="detail-section">
+              <h4>Overview</h4>
+              <p>ESP32-based controller for WS2812B addressable LED strips. Features a library of custom animations, web-based control interface, and integration with Home Assistant. Drives up to 500 LEDs with smooth color transitions and effects.</p>
+            </div>
+            <div class="detail-section">
+              <h4>Key Features</h4>
+              <ul>
+                <li>FastLED library for hardware-accelerated rendering</li>
+                <li>20+ custom animation patterns (fire, rainbow, chase, breathe, etc.)</li>
+                <li>Web UI for real-time control and pattern selection</li>
+                <li>MQTT integration with Home Assistant</li>
+                <li>Audio-reactive mode using analog microphone input</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <h4>Technical Details</h4>
+              <p>ESP32 drives LED data at 800kHz using RMT peripheral for precise timing. Animation engine supports layered effects with alpha blending. Web server runs on port 80 with responsive UI. MQTT publishes state changes and receives commands from home automation system.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4: Ender 3 V2 Klipper -->
+      <div class="project-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Ender 3 V2 Klipper Upgrade</h3>
+            <p class="card-summary">Complete conversion to Klipper firmware with custom macros and tuning</p>
+          </div>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Klipper</span>
+          <span class="tag">Raspberry Pi</span>
+          <span class="tag">3D Printing</span>
+          <span class="tag">Macros</span>
+        </div>
+        <div class="card-details">
+          <div class="card-details-content">
+            <div class="detail-section">
+              <h4>Overview</h4>
+              <p>Ender 3 V2 upgraded from stock Marlin firmware to Klipper running on Raspberry Pi 4. Significant improvements in print quality, speed, and features. Input shaping eliminates ringing artifacts. Pressure advance improves corner quality.</p>
+            </div>
+            <div class="detail-section">
+              <h4>Key Features</h4>
+              <ul>
+                <li>Input shaping tuned with accelerometer (ringing eliminated)</li>
+                <li>Pressure advance calibrated per filament type</li>
+                <li>Custom start/end G-code macros</li>
+                <li>Automated bed mesh leveling before each print</li>
+                <li>Mainsail web interface for remote monitoring</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <h4>Technical Details</h4>
+              <p>Klipper offloads motion planning to Raspberry Pi, allowing 32-bit processing for smoother motion. ADXL345 accelerometer measured resonances at 42Hz (X) and 38Hz (Y). Input shaping applied with MZV algorithm. Pressure advance set to 0.055 for PLA, 0.065 for PETG. Macro library handles filament loading, purging, and calibration routines.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5: Home Assistant Setup -->
+      <div class="project-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Home Assistant & Monitoring</h3>
+            <p class="card-summary">Self-hosted home automation with custom integrations and monitoring dashboards</p>
+          </div>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Home Assistant</span>
+          <span class="tag">Docker</span>
+          <span class="tag">MQTT</span>
+          <span class="tag">Grafana</span>
+        </div>
+        <div class="card-details">
+          <div class="card-details-content">
+            <div class="detail-section">
+              <h4>Overview</h4>
+              <p>Home Assistant running in Docker on dedicated server. Integrates smart home devices, custom ESP32 sensors, and monitoring tools. Grafana dashboards track system metrics, network performance, and environmental data.</p>
+            </div>
+            <div class="detail-section">
+              <h4>Key Features</h4>
+              <ul>
+                <li>MQTT broker for ESP32 device communication</li>
+                <li>Custom sensors: temperature, humidity, power monitoring</li>
+                <li>Automated lighting scenes and schedules</li>
+                <li>Network monitoring with Grafana + InfluxDB</li>
+                <li>Backup automation with daily snapshots</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <h4>Technical Details</h4>
+              <p>Home Assistant Core running in Docker with Mosquitto MQTT broker. ESP32 devices publish sensor data to MQTT topics. Node-RED handles complex automation flows. Grafana visualizes time-series data from InfluxDB. All services reverse-proxied through Nginx with SSL.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== TECH STACK ===== -->
+<section id="tech">
+  <div class="container">
+    <div class="section-header">
+      <h2>Tech & Tools</h2>
+      <p class="subtitle">The hardware, software, and systems that make it all work.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-item"><span class="category">Flight</span>iNav</div>
+      <div class="tech-item"><span class="category">Flight</span>Betaflight</div>
+      <div class="tech-item"><span class="category">RC</span>Crossfire</div>
+      <div class="tech-item"><span class="category">RC</span>ELRS</div>
+      <div class="tech-item"><span class="category">MCU</span>ESP32</div>
+      <div class="tech-item"><span class="category">MCU</span>Arduino</div>
+      <div class="tech-item"><span class="category">LEDs</span>WS2812B</div>
+      <div class="tech-item"><span class="category">LEDs</span>FastLED</div>
+      <div class="tech-item"><span class="category">Printer</span>Klipper</div>
+      <div class="tech-item"><span class="category">Printer</span>Ender 3 V2</div>
+      <div class="tech-item"><span class="category">CAD</span>Fusion 360</div>
+      <div class="tech-item"><span class="category">CAD</span>OpenSCAD</div>
+      <div class="tech-item"><span class="category">Home</span>Home Assistant</div>
+      <div class="tech-item"><span class="category">Home</span>Docker</div>
+      <div class="tech-item"><span class="category">Network</span>MQTT</div>
+      <div class="tech-item"><span class="category">Monitor</span>Grafana</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-credit">Built with curiosity. Powered by too much coffee.</div>
+      <div class="footer-links">
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:hello@example.com">Email</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Toggle project card expansion
+function toggleCard(card) {
+  const isExpanded = card.classList.contains('expanded');
+
+  // Close all other cards
+  document.querySelectorAll('.project-card').forEach(c => {
+    if (c !== card) c.classList.remove('expanded');
+  });
+
+  // Toggle current card
+  card.classList.toggle('expanded');
+
+  // Scroll to card if expanding
+  if (!isExpanded) {
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Close expanded cards when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.project-card')) {
+    document.querySelectorAll('.project-card.expanded').forEach(card => {
+      card.classList.remove('expanded');
+    });
+  }
+});
+</script>
+
+</body>
+</html>
