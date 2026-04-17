@@ -1,12 +1,527 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0027)https://atarefpv.github.io/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jonathan W. Smith — Builder / Maker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<title>Jamie Towater — Data Engineer, Inventor &amp; Systems Thinker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<style>
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDba2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-LfmOamaKjhw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDba2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-LfmOTmaKjhw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDba2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-LfmOUmaKjhw.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDba2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-LfmOYmaKjhw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDba2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-LfmOZmaKjhw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDba2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-LfmOXmaI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD2OwG_TA.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD0OwG_TA.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD1OwG_TA.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD2OwG_TA.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD0OwG_TA.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD1OwG_TA.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD2OwG_TA.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD0OwG_TA.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD1OwG_TA.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFoqJ2nOeZ.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFoqt2nOeZ.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* math */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFotN2nOeZ.woff2) format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFosF2nOeZ.woff2) format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFoqB2nOeZ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFoqF2nOeZ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFoq92nA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwf7I-NP.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMw77I-NP.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* math */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuM3b7I-NP.woff2) format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuM2T7I-NP.woff2) format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwX7I-NP.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwT7I-NP.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwr7Iw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwf7I-NP.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMw77I-NP.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* math */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuM3b7I-NP.woff2) format('woff2');
+  unicode-range: U+0302-0303, U+0305, U+0307-0308, U+0310, U+0312, U+0315, U+031A, U+0326-0327, U+032C, U+032F-0330, U+0332-0333, U+0338, U+033A, U+0346, U+034D, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D1, U+03D5-03D6, U+03F0-03F1, U+03F4-03F5, U+2016-2017, U+2034-2038, U+203C, U+2040, U+2043, U+2047, U+2050, U+2057, U+205F, U+2070-2071, U+2074-208E, U+2090-209C, U+20D0-20DC, U+20E1, U+20E5-20EF, U+2100-2112, U+2114-2115, U+2117-2121, U+2123-214F, U+2190, U+2192, U+2194-21AE, U+21B0-21E5, U+21F1-21F2, U+21F4-2211, U+2213-2214, U+2216-22FF, U+2308-230B, U+2310, U+2319, U+231C-2321, U+2336-237A, U+237C, U+2395, U+239B-23B7, U+23D0, U+23DC-23E1, U+2474-2475, U+25AF, U+25B3, U+25B7, U+25BD, U+25C1, U+25CA, U+25CC, U+25FB, U+266D-266F, U+27C0-27FF, U+2900-2AFF, U+2B0E-2B11, U+2B30-2B4C, U+2BFE, U+3030, U+FF5B, U+FF5D, U+1D400-1D7FF, U+1EE00-1EEFF;
+}
+/* symbols */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuM2T7I-NP.woff2) format('woff2');
+  unicode-range: U+0001-000C, U+000E-001F, U+007F-009F, U+20DD-20E0, U+20E2-20E4, U+2150-218F, U+2190, U+2192, U+2194-2199, U+21AF, U+21E6-21F0, U+21F3, U+2218-2219, U+2299, U+22C4-22C6, U+2300-243F, U+2440-244A, U+2460-24FF, U+25A0-27BF, U+2800-28FF, U+2921-2922, U+2981, U+29BF, U+29EB, U+2B00-2BFF, U+4DC0-4DFF, U+FFF9-FFFB, U+10140-1018E, U+10190-1019C, U+101A0, U+101D0-101FD, U+102E0-102FB, U+10E60-10E7E, U+1D2C0-1D2D3, U+1D2E0-1D37F, U+1F000-1F0FF, U+1F100-1F1AD, U+1F1E6-1F1FF, U+1F30D-1F30F, U+1F315, U+1F31C, U+1F31E, U+1F320-1F32C, U+1F336, U+1F378, U+1F37D, U+1F382, U+1F393-1F39F, U+1F3A7-1F3A8, U+1F3AC-1F3AF, U+1F3C2, U+1F3C4-1F3C6, U+1F3CA-1F3CE, U+1F3D4-1F3E0, U+1F3ED, U+1F3F1-1F3F3, U+1F3F5-1F3F7, U+1F408, U+1F415, U+1F41F, U+1F426, U+1F43F, U+1F441-1F442, U+1F444, U+1F446-1F449, U+1F44C-1F44E, U+1F453, U+1F46A, U+1F47D, U+1F4A3, U+1F4B0, U+1F4B3, U+1F4B9, U+1F4BB, U+1F4BF, U+1F4C8-1F4CB, U+1F4D6, U+1F4DA, U+1F4DF, U+1F4E3-1F4E6, U+1F4EA-1F4ED, U+1F4F7, U+1F4F9-1F4FB, U+1F4FD-1F4FE, U+1F503, U+1F507-1F50B, U+1F50D, U+1F512-1F513, U+1F53E-1F54A, U+1F54F-1F5FA, U+1F610, U+1F650-1F67F, U+1F687, U+1F68D, U+1F691, U+1F694, U+1F698, U+1F6AD, U+1F6B2, U+1F6B9-1F6BA, U+1F6BC, U+1F6C6-1F6CF, U+1F6D3-1F6D7, U+1F6E0-1F6EA, U+1F6F0-1F6F3, U+1F6F7-1F6FC, U+1F700-1F7FF, U+1F800-1F80B, U+1F810-1F847, U+1F850-1F859, U+1F860-1F887, U+1F890-1F8AD, U+1F8B0-1F8BB, U+1F8C0-1F8C1, U+1F900-1F90B, U+1F93B, U+1F946, U+1F984, U+1F996, U+1F9E9, U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FA89, U+1FA8F-1FAC6, U+1FACE-1FADC, U+1FADF-1FAE9, U+1FAF0-1FAF8, U+1FB00-1FBFF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwX7I-NP.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwT7I-NP.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwr7Iw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* greek */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2NL9Hz_.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm25L9Hz_.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9A.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* greek */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2NL9Hz_.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm25L9Hz_.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9A.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* greek */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2NL9Hz_.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm25L9Hz_.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9A.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* greek */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2NL9Hz_.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm25L9Hz_.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9A.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+</style>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -261,12 +776,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
 <body>
 
 <div class="cur" id="cur">
-  <div class="cur-dot" id="cdot"></div>
-  <div class="cur-ring" id="cring"></div>
+  <div class="cur-dot" id="cdot" style="transform: translate(561px, 433px) translate(-50%, -50%);"></div>
+  <div class="cur-ring" id="cring" style="transform: translate(561px, 433px) translate(-50%, -50%);"></div>
 </div>
 
-<nav id="nav">
-  <a href="#" class="nav-logo">JW<span>.</span>Smith</a>
+<nav id="nav" class="scrolled">
+  <a href="#hero" class="nav-logo">JT<span>.</span>owater</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
@@ -280,9 +795,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
   <canvas id="hero-canvas"></canvas>
   <div class="hero-noise"></div>
   <div class="hero-content">
-    <p class="hero-pre">// Nashville, TN &nbsp;·&nbsp; Builder &nbsp;·&nbsp; Maker</p>
-    <h1 class="hero-name">Jonathan<br><em>W. Smith</em></h1>
-    <p class="hero-tag"><span id="typewriter"></span><span class="tw-cursor"></span></p>
+    <p class="hero-pre">// Nashville, TN &nbsp;·&nbsp; Senior Database Developer &nbsp;·&nbsp; Data Engineering Builder &nbsp;·&nbsp; Inventor</p>
+    <h1 class="hero-name">Jamie<br><em>Towater</em></h1>
+    <p class="hero-tag"><span id="typewriter">Clear systems. Useful tools. Humane design.</span><span class="tw-cursor"></span></p>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-p">View Projects</a>
       <a href="#about" class="btn btn-o">About Me</a>
@@ -290,9 +805,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
   </div>
   <div class="hero-scroll">Scroll to explore</div>
   <div class="hero-stats">
-    <div><div class="stat-v">5+</div><div class="stat-l">Active Projects</div></div>
-    <div><div class="stat-v">200+</div><div class="stat-l">Node Mesh Network</div></div>
-    <div><div class="stat-v">∞</div><div class="stat-l">Things to Build</div></div>
+    <div><div class="stat-v">15+</div><div class="stat-l">Years in IT</div></div>
+    <div><div class="stat-v">40%</div><div class="stat-l">Snowflake Savings</div></div>
+    <div><div class="stat-v">1.1K</div><div class="stat-l">Zen Bones Subs</div></div>
   </div>
 </section>
 
@@ -300,11 +815,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
   <div class="about-in">
     <div class="about-left reveal">
       <div class="section-label">About</div>
-      <h2>Hands-on first.<br>Tech always.</h2>
-      <p>I came up through <strong>Home repair, Property Maintenance and Operations</strong> — work that taught me how to diagnose problems fast, improvise solutions under pressure, and actually finish things. Not theory. Real stuff, with real consequences.</p>
-      <p>Over time, my interests shifted. Every time something broke I wanted to understand it deeper — not just fix it but <em>know why it failed</em>. That curiosity led me into electronics, firmware, networking, and eventually building tools from scratch.</p>
-      <p>Now I'm doing work I genuinely care about: <strong>embedded systems, FPV aircraft, 3D printing, self-hosted infrastructure, and custom electronics</strong>. Not because it looks good on a list, but because I can't stop building things.</p>
-      <p>I'm actively transitioning into tech — pursuing hardware-adjacent IT and support roles where practical problem-solving matters as much as the certificate.</p>
+      <h2>Clear systems.<br>Humane design.</h2>
+      <p>I’ve spent <strong>15+ years in enterprise IT</strong> — largely in healthcare and data-heavy environments — growing from analyst and support work into database administration, senior SQL development, and modern data engineering patterns.</p>
+      <p>My foundation is practical and production-focused: <strong>SQL Server, ETL/ELT, data quality, performance tuning, and dependable delivery</strong>. I’ve built pipelines that move data from SQL to Parquet to S3, explored AWS Iceberg architectures for large-scale table migration, and optimized dbt/Snowflake workloads to reduce cost by roughly <em>40%</em>.</p>
+      <p>Outside of enterprise data, I build like an inventor. <strong>VERA</strong> is my most ambitious concept so far — an accessibility-forward nail-care device built around a nail-only interface, dust-managed design, repeatable finished edges, and a deeper mission around independence, dignity, and safer self-care.</p>
+      <p>My direction now is to combine <strong>senior data engineering, modern tooling, prototyping, product invention, and immersive demo storytelling</strong> into work that stays calm under pressure — stable, correct, and genuinely useful.</p>
     </div>
     <div class="reveal d2">
       <div class="section-label">Story</div>
@@ -312,33 +827,41 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
         <div class="tl-item">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div>
-            <div class="tl-era">The foundation</div>
-            <div class="tl-title">Maintenance &amp; Operations</div>
-            <div class="tl-desc">Managed systems across large residential and commercial properties. Learned to diagnose, prioritize, and fix — fast. Real-world troubleshooting under real stakes.</div>
+            <div class="tl-era">2006–2009</div>
+            <div class="tl-title">Data Foundations</div>
+            <div class="tl-desc">Started as a Data Analyst at BNA Financial Bureau, building the habit of turning messy business data into something usable, traceable, and accurate.</div>
           </div>
         </div>
         <div class="tl-item">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div>
-            <div class="tl-era">The shift</div>
-            <div class="tl-title">Maker Rabbit Hole</div>
-            <div class="tl-desc">FPV drones, 3D printing, ESP32 projects. Started modding, then building from scratch. Klipper, Betaflight, Meshtastic, custom firmware — each one teaching something new.</div>
+            <div class="tl-era">2009–2011</div>
+            <div class="tl-title">Support &amp; Delivery</div>
+            <div class="tl-desc">Worked as a Support Analyst at Conexess Group, strengthening the operational side of technology: troubleshooting, user needs, delivery pressure, and getting real systems unstuck.</div>
           </div>
         </div>
         <div class="tl-item">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div>
-            <div class="tl-era">Going deeper</div>
-            <div class="tl-title">Homelab &amp; Infrastructure</div>
-            <div class="tl-desc">Self-hosted Docker stack, VPN mesh, remote monitoring, Nextcloud, Home Assistant. Started thinking in systems — services, uptime, dependencies, access control.</div>
+            <div class="tl-era">2011–2021</div>
+            <div class="tl-title">Database Depth</div>
+            <div class="tl-desc">Spent a decade at KEPRO as a Database Administrator, going deep on SQL Server, reliability, maintenance, performance, and enterprise healthcare data operations.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div>
+            <div class="tl-era">2021–Present</div>
+            <div class="tl-title">Modern Data Platforms</div>
+            <div class="tl-desc">At HealthStream, I work as a Senior Database Developer while pushing toward full data engineering: Snowflake, dbt, AWS, Parquet, Iceberg, Python, documentation, and architecture POCs.</div>
           </div>
         </div>
         <div class="tl-item">
           <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
           <div>
             <div class="tl-era">Right now</div>
-            <div class="tl-title">Hardware Diagnostics &amp; IT Transition</div>
-            <div class="tl-desc">Performing component-level diagnostics on enterprise AI server hardware. Pursuing CompTIA A+. Building toward IT support and hardware-focused tech roles.</div>
+            <div class="tl-title">VERA &amp; What’s Next</div>
+            <div class="tl-desc">I’m building VERA in parallel with my technical career, exploring Unity/VR as a way to let people step inside the idea, and aiming for senior data engineering roles where scale, ownership, and builder judgment are valued.</div>
           </div>
         </div>
       </div>
@@ -350,120 +873,134 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
   <div class="proj-hdr reveal">
     <div>
       <div class="section-label">Projects</div>
-      <h2>Things I've built.</h2>
+      <h2>What I’m building.</h2>
     </div>
-    <div class="proj-ct">06 featured builds</div>
+    <div class="proj-ct">07 featured highlights</div>
   </div>
   <div class="proj-grid">
 
     <div class="pcard feat reveal d1" style="display:grid;grid-template-columns:1.2fr 1fr">
       <div style="display:flex;flex-direction:column">
         <div class="card-bar"></div>
-        <div class="card-top"><div class="card-ico">📡</div><span class="card-tag tag-esp">ESP32</span></div>
+        <div class="card-top"><div class="card-ico">🛡️</div><span class="card-tag tag-led">Inventor</span></div>
         <div class="card-body" style="flex:1">
-          <div class="card-title">ESP32 Telemetry Ground Station</div>
-          <div class="card-desc">Standalone RC ground station built on an ESP32-S3 T-Display. Receives live Crossfire telemetry via UART, decodes CRSF protocol, and displays GPS, altitude, voltage, heading, and signal strength on a custom UI.</div>
-          <div class="chips"><span class="chip">ESP32-S3</span><span class="chip">CRSF / Crossfire</span><span class="chip">UART</span><span class="chip">iNav</span><span class="chip">FastLED</span></div>
+          <div class="card-title">VERA</div>
+          <div class="card-desc">An inclusive nail-care device in development, built around a nail-only interface, finished-edge polish, dust-managed operation, and layered safety meant to protect independence and dignity — not just trim nails.</div>
+          <div class="chips"><span class="chip">VERA</span><span class="chip">Inclusive Design</span><span class="chip">Safety Layers</span><span class="chip">Sealed Cartridge</span><span class="chip">Finish Polish</span></div>
         </div>
         <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
         <div class="card-expand"><div class="expand-in">
-          <div class="exp-row"><span class="exp-lbl">Platform</span><span class="exp-val">ESP32-S3 T-Display-S3, Crossfire Nano RX</span></div>
-          <div class="exp-row"><span class="exp-lbl">Protocol</span><span class="exp-val">CRSF telemetry over UART — decoded from scratch in firmware</span></div>
-          <div class="exp-row"><span class="exp-lbl">Displays</span><span class="exp-val">Summary, GPS coordinates, radar view, artificial horizon — multiple switchable views</span></div>
-          <div class="exp-row"><span class="exp-lbl">Planned</span><span class="exp-val">MSP forwarding for ground tool compatibility; ELRS and mLRS support</span></div>
-          <div class="exp-row"><span class="exp-lbl">Goal</span><span class="exp-val">Portable, modular, and beginner-friendly — designed to run on any ESP32 target</span></div>
+          <div class="exp-row"><span class="exp-lbl">Concept</span><span class="exp-val">A handheld or guided-use system focused on safer nail reduction and edge finishing without letting soft tissue reach the working zone.</span></div>
+          <div class="exp-row"><span class="exp-lbl">Inclusive design</span><span class="exp-val">Shaped around people conventional tools often ignore: visual impairment, dexterity limits, neuropathy, aging hands, and anyone who needs safer, more predictable self-care. Haptic guidance, magnetic cartridge concepts, tactile/high-contrast controls, and tabletop modes are all part of the direction.</span></div>
+          <div class="exp-row"><span class="exp-lbl">Engineering</span><span class="exp-val">Patent-style figures, BOM research, motion testing, removable cartridge concepts, vacuum exploration, and fast prototype iteration — all anchored in layered safety rather than cosmetic novelty.</span></div>
+          <div class="exp-row"><span class="exp-lbl">Alternate paths</span><span class="exp-val">Self-healing membrane concepts, a DLC &ldquo;Infinity Drum,&rdquo; capacitive auto-stop, NFC cartridge authentication, pressure sensing, and future diagnostic sensing reserved thoughtfully without overclaiming.</span></div>
+          <div class="exp-row"><span class="exp-lbl">Goal</span><span class="exp-val">Build an accessibility-forward safety device that can live in consumer, caregiver, and clinical settings without feeling like a compromise.</span></div>
         </div></div>
       </div>
-      <div style="background:var(--surface2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:0 var(--r2) var(--r2) 0">
-        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(74,222,128,.12),transparent 65%)"></div>
+      <div style="background: var(--surface2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-radius: 0 var(--r2) var(--r2) 0;">
+        <div style="position: absolute; inset: 0; background: radial-gradient(circle, rgba(233, 160, 32, 0.14), transparent 65%);"></div>
         <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="font-size:64px">📡</div>
-          <div style="font-family:var(--font-m);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);opacity:.8">Signal Active</div>
+          <div style="font-size:64px">🛡️</div>
+          <div style="font-family: var(--font-m); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); opacity: 0.8;">Prototype Active</div>
         </div>
       </div>
     </div>
 
     <div class="pcard reveal d2">
       <div class="card-bar blue"></div>
-      <div class="card-top"><div class="card-ico">✈️</div><span class="card-tag tag-fpv">FPV / iNav</span></div>
+      <div class="card-top"><div class="card-ico">☁️</div><span class="card-tag tag-lab">Data Platform</span></div>
       <div class="card-body">
-        <div class="card-title">AtomRC Dolphin Build</div>
-        <div class="card-desc">Long-range fixed-wing FPV platform optimized for endurance, reliability, and field repairability. Full iNav stack with Crossfire, DJI video, custom LED nav lighting, and prop/battery tuning for maximum flight time.</div>
-        <div class="chips"><span class="chip">iNav</span><span class="chip">Crossfire</span><span class="chip">DJI Vista</span><span class="chip">WS2812</span><span class="chip">WTFOS</span></div>
+        <div class="card-title">Healthcare Data Platform Modernization</div>
+        <div class="card-desc">Practical architecture work for moving on-prem SQL data into Parquet, S3, Glue, Athena, and Iceberg using incremental patterns that can scale well beyond a handful of tables.</div>
+        <div class="chips"><span class="chip">SQL Server</span><span class="chip">Parquet</span><span class="chip">S3</span><span class="chip">Glue</span><span class="chip">Iceberg</span></div>
       </div>
       <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
       <div class="card-expand"><div class="expand-in">
-        <div class="exp-row"><span class="exp-lbl">Frame</span><span class="exp-val">AtomRC Dolphin — EPP foam fixed-wing with modular component bay</span></div>
-        <div class="exp-row"><span class="exp-lbl">Stack</span><span class="exp-val">iNav flight controller, TBS Crossfire for link, DJI Vista for HD video feed</span></div>
-        <div class="exp-row"><span class="exp-lbl">Mods</span><span class="exp-val">Custom WS2812 nav lighting, WTFOS rooted DJI system, optimized prop/battery combo</span></div>
-        <div class="exp-row"><span class="exp-lbl">Focus</span><span class="exp-val">Weight budgeting, launch performance, return-to-home reliability, and field diagnostics</span></div>
+        <div class="exp-row"><span class="exp-lbl">Focus</span><span class="exp-val">Designing a simpler path from legacy SQL Server environments to AWS-native analytical tables without creating fragile, hand-built one-offs.</span></div>
+          <div class="exp-row"><span class="exp-lbl">Patterns</span><span class="exp-val">CDC and incremental loads, SQL-to-Parquet export strategies, Glue-managed tables, Athena consumption, and Iceberg for ACID-friendly lakehouse behavior.</span></div>
+          <div class="exp-row"><span class="exp-lbl">Scale</span><span class="exp-val">Thinking in hundreds of tables, long data history, operational simplicity, and cost-aware movement of very large healthcare datasets.</span></div>
       </div></div>
     </div>
 
     <div class="pcard reveal d2">
-      <div class="card-bar"></div>
-      <div class="card-top"><div class="card-ico">💡</div><span class="card-tag tag-led">Electronics</span></div>
+      <div class="card-bar green"></div>
+      <div class="card-top"><div class="card-ico">📉</div><span class="card-tag tag-lab">Analytics</span></div>
       <div class="card-body">
-        <div class="card-title">WS2812 LED Animation System</div>
-        <div class="card-desc">ESP32-based custom LED controller with physically remapped WS2812 strips, mirrored animation logic, and RC radio switch integration. Includes scanner, fire, strobe, sparkle, and breathing effects.</div>
-        <div class="chips"><span class="chip">FastLED</span><span class="chip">ESP32-S3</span><span class="chip">XIAO C3</span><span class="chip">PWM Bridge</span><span class="chip">WLED API</span></div>
+        <div class="card-title">Snowflake + dbt Optimization</div>
+        <div class="card-desc">Reduced Snowflake cost by roughly 40% through practical model tuning, performance-minded refactoring, and cleaner transformation design.</div>
+        <div class="chips"><span class="chip">Snowflake</span><span class="chip">dbt</span><span class="chip">Cost Control</span><span class="chip">Model Tuning</span><span class="chip">Performance</span></div>
       </div>
       <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
       <div class="card-expand"><div class="expand-in">
-        <div class="exp-row"><span class="exp-lbl">Hardware</span><span class="exp-val">ESP32-S3 running WLED; secondary XIAO ESP32-C3 as PWM-to-API bridge for RC switch control</span></div>
-        <div class="exp-row"><span class="exp-lbl">Remapping</span><span class="exp-val">Custom physical-to-logical index map for mirrored animations across asymmetric LED strips</span></div>
-        <div class="exp-row"><span class="exp-lbl">Debug</span><span class="exp-val">Diagnosed and resolved 5V-to-3.3V signal level mismatch using logic level shifter</span></div>
-        <div class="exp-row"><span class="exp-lbl">Integration</span><span class="exp-val">Mounted on AtomRC Dolphin; RC transmitter switch controls animation mode in-flight</span></div>
-      </div></div>
-    </div>
-
-    <div class="pcard reveal d3">
-      <div class="card-bar purple"></div>
-      <div class="card-top"><div class="card-ico">🖨️</div><span class="card-tag tag-3dp">3D Printing</span></div>
-      <div class="card-body">
-        <div class="card-title">Ender 3 V2 / Klipper Build</div>
-        <div class="card-desc">Heavily modded Ender 3 running Klipper on a BTT Pad 7. Sprite Pro direct drive, dual Z with splitter, SKR Mini E3 V3, CR Touch bed leveling, PEI surfaces, input shaping, and pressure advance tuning.</div>
-        <div class="chips"><span class="chip">Klipper</span><span class="chip">Mainsail</span><span class="chip">OrcaSlicer</span><span class="chip">ADXL345</span><span class="chip">BTT Pad 7</span></div>
-      </div>
-      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
-      <div class="card-expand"><div class="expand-in">
-        <div class="exp-row"><span class="exp-lbl">Mods</span><span class="exp-val">Sprite Pro direct drive, dual Z leadscrew, SKR Mini E3 V3, CR Touch, PEI spring steel</span></div>
-        <div class="exp-row"><span class="exp-lbl">Firmware</span><span class="exp-val">Klipper with Moonraker API; Mainsail UI; BTT Pad 7 touchscreen with KlipperScreen</span></div>
-        <div class="exp-row"><span class="exp-lbl">Tuning</span><span class="exp-val">Input shaping (ADXL345), pressure advance, bed mesh compensation, PID calibration</span></div>
-        <div class="exp-row"><span class="exp-lbl">Extras</span><span class="exp-val">Audio alerts via shell macros, Noctua PWM fans, Obico remote monitoring, PETG/TPU profiles</span></div>
+        <div class="exp-row"><span class="exp-lbl">Work</span><span class="exp-val">Optimized transformation logic and model structure to reduce waste while keeping pipelines easier to reason about and support.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Result</span><span class="exp-val">Meaningful compute savings without trading away reliability or maintainability.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Bias</span><span class="exp-val">I prefer boring, stable, correct systems — especially when they also save money.</span></div>
       </div></div>
     </div>
 
     <div class="pcard reveal d3">
       <div class="card-bar teal"></div>
-      <div class="card-top"><div class="card-ico">🖧</div><span class="card-tag tag-lab">Homelab</span></div>
+      <div class="card-top"><div class="card-ico">🧰</div><span class="card-tag tag-esp">Tooling / Docs</span></div>
       <div class="card-body">
-        <div class="card-title">Self-Hosted Infrastructure</div>
-        <div class="card-desc">Docker-based home server stack with Tailscale VPN mesh for secure remote access. Monitoring, file sync, print farm management, and smart home — all self-hosted, all under my control.</div>
-        <div class="chips"><span class="chip">Docker</span><span class="chip">Portainer</span><span class="chip">Tailscale</span><span class="chip">Home Assistant</span><span class="chip">Nextcloud</span></div>
+        <div class="card-title">Modern Tooling Workflow</div>
+        <div class="card-desc">A practical working style that uses GitHub Copilot, Cursor, Python, and strong markdown documentation so routine effort gets lighter and more attention can go to architecture, judgment, and clarity.</div>
+        <div class="chips"><span class="chip">Copilot</span><span class="chip">Cursor</span><span class="chip">Python</span><span class="chip">VS Code</span><span class="chip">Docs</span></div>
       </div>
       <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
       <div class="card-expand"><div class="expand-in">
-        <div class="exp-row"><span class="exp-lbl">Host</span><span class="exp-val">Windows desktop running Docker Desktop, managed via Portainer</span></div>
-        <div class="exp-row"><span class="exp-lbl">Services</span><span class="exp-val">Home Assistant, Nextcloud, Uptime Kuma, Obico (3D print monitoring), Moonraker</span></div>
-        <div class="exp-row"><span class="exp-lbl">Network</span><span class="exp-val">Tailscale VPN mesh for zero-config remote access across all devices</span></div>
-        <div class="exp-row"><span class="exp-lbl">Extras</span><span class="exp-val">Input Leap for cross-machine KVM; Meshtastic MQTT broker integration</span></div>
+        <div class="exp-row"><span class="exp-lbl">Tools</span><span class="exp-val">GitHub Copilot, Cursor, VS Code, prompt workflows, and repeatable documentation patterns.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Use cases</span><span class="exp-val">SQL generation and review, Python helpers, architecture notes, test cases, migration planning, and faster iteration on technical writing.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Philosophy</span><span class="exp-val">The tools are not the point. They should dissolve into the background and leave more room for careful thinking.</span></div>
+      </div></div>
+    </div>
+
+    <div class="pcard reveal d3">
+      <div class="card-bar purple"></div>
+      <div class="card-top"><div class="card-ico">🖨️</div><span class="card-tag tag-3dp">Prototype</span></div>
+      <div class="card-body">
+        <div class="card-title">Prototype &amp; 3D Print Lab</div>
+        <div class="card-desc">A lightweight prototyping workflow for VERA and other concepts using 3D printing, BOM research, printable fixtures, magnets, membranes, and fast small-part iteration instead of overthinking everything first.</div>
+        <div class="chips"><span class="chip">Bambu Lab</span><span class="chip">PETG</span><span class="chip">Fixtures</span><span class="chip">BOMs</span><span class="chip">Iteration</span></div>
+      </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Approach</span><span class="exp-val">Prototype what matters first: clearances, slot concepts, cartridge geometry, vacuum paths, mounting, and tactile feel.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Tools</span><span class="exp-val">Bambu Lab A1 Mini workflows, Amazon-available parts sourcing, printable test rigs, and CAD/CAM experimentation.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Value</span><span class="exp-val">Turns invention from theory into physical tradeoffs you can actually evaluate.</span></div>
       </div></div>
     </div>
 
     <div class="pcard reveal d4">
-      <div class="card-bar green"></div>
-      <div class="card-top"><div class="card-ico">📻</div><span class="card-tag tag-esp">LoRa / Mesh</span></div>
+      <div class="card-bar teal"></div>
+      <div class="card-top"><div class="card-ico">🥽</div><span class="card-tag tag-lab">Unity / VR</span></div>
       <div class="card-body">
-        <div class="card-title">Tennessee Meshtastic Network</div>
-        <div class="card-desc">Co-founded a 200+ member LoRa mesh radio network covering Nashville metro. Built a Python weather alert bot using the NWS API and MQTT to push severe weather alerts to the mesh in real time.</div>
-        <div class="chips"><span class="chip">Meshtastic</span><span class="chip">LoRa</span><span class="chip">MQTT</span><span class="chip">Python</span><span class="chip">NWS API</span></div>
+        <div class="card-title">VERA Lab VR</div>
+        <div class="card-desc">Using Unity and VR to turn VERA into an immersive lab walkthrough where people can inspect the device, watch the sweep mechanism, compare accessibility features and cartridge ideas, and understand the product in 3D instead of through flat slides.</div>
+        <div class="chips"><span class="chip">Unity</span><span class="chip">Meta Quest 3</span><span class="chip">XR Toolkit</span><span class="chip">WebXR</span><span class="chip">Investor Demo</span></div>
       </div>
       <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
       <div class="card-expand"><div class="expand-in">
-        <div class="exp-row"><span class="exp-lbl">Scale</span><span class="exp-val">200+ members, Nashville metro coverage, active Meshtastic LoRa node network</span></div>
-        <div class="exp-row"><span class="exp-lbl">Bot</span><span class="exp-val">Python script polls NWS API; formats alerts into &lt;200 byte LoRa-optimized messages; broadcasts via MQTT</span></div>
-        <div class="exp-row"><span class="exp-lbl">Role</span><span class="exp-val">Co-founder, node operator, software contributor, community organizer</span></div>
+        <div class="exp-row"><span class="exp-lbl">Use case</span><span class="exp-val">A fundraising and marketing-friendly environment that lets people move through a virtual VERA lab, inspect components, and see how the concept works spatially.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Flow</span><span class="exp-val">Interactive stations for sweep motion, accessibility modes, cartridge variants, before/after finish comparisons, and UI overlays for specs, safety features, and the business story.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Stack</span><span class="exp-val">OpenSCAD/CAD assets exported through Blender into Unity, then layered with animation, XR interactions, and optional WebXR-style demos for people without headsets.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Why it matters</span><span class="exp-val">It bridges invention, prototyping, and storytelling. Some ideas become clear the moment someone can stand inside the explanation.</span></div>
+      </div></div>
+    </div>
+
+    <div class="pcard reveal d4">
+      <div class="card-bar blue"></div>
+      <div class="card-top"><div class="card-ico">🪷</div><span class="card-tag tag-fpv">Media / Ideas</span></div>
+      <div class="card-body">
+        <div class="card-title">Zen Bones</div>
+        <div class="card-desc">A philosophy channel centered on Alan Watts, Taoism, Zen, and consciousness — an ongoing space for questions about self, perception, and what remains when noise drops away.</div>
+        <div class="chips"><span class="chip">Alan Watts</span><span class="chip">Taoism</span><span class="chip">Zen</span><span class="chip">Consciousness</span><span class="chip">YouTube</span></div>
+      </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Channel</span><span class="exp-val">Zen Bones / @towater — a curated space for timeless lectures, rare talks, and full-series uploads around Eastern thought and self-awareness.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Snapshot</span><span class="exp-val">1.1K subscribers, 18 videos, and more than 131K views in the current snapshot you shared.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Why it fits</span><span class="exp-val">It rounds out the technical side of my work. Systems thinking, invention, and deeper philosophical curiosity are not separate lanes for me.</span></div>
+        <div class="exp-row"><span class="exp-lbl">Visit</span><span class="exp-val"><a href="https://www.youtube.com/@towater" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none">youtube.com/@towater</a></span></div>
       </div></div>
     </div>
 
@@ -472,14 +1009,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
 
 <section id="sphere-sec">
   <div class="sph-lay">
-    <div class="sph-txt reveal">
+    <div class="sph-txt reveal vis">
       <div class="section-label">Explore</div>
-      <h2>Everything in orbit.</h2>
-      <p>Every project connects to something else. The ground station needs the aircraft. The aircraft needs the LED system. The LED system needs the 3D-printed mount. It's all one big interconnected build.</p>
-      <p>This isn't a list of hobbies. It's a system of interests that push each other forward.</p>
+      <h2>One system, many expressions.</h2>
+      <p>From the outside, data engineering, invention, prototyping, immersive demos, and philosophy can look like separate worlds. Underneath, they all ask the same thing: can you see clearly enough to remove friction and build with care?</p>
+      <p>Reliable data platforms, inclusive product design, strong documentation, immersive storytelling, and Zen Bones all point me toward the same values — clarity, usefulness, and systems that treat people well.</p>
       <p class="sph-hint">↻ Drag to spin · Hold tile to explore</p>
     </div>
-    <div class="sph-wrap reveal d2" id="sph-wrap">
+    <div class="sph-wrap reveal d2 vis" id="sph-wrap">
       <canvas id="sph-canvas"></canvas>
       <div id="sph-labels"></div>
     </div>
@@ -492,47 +1029,47 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
     <h2 class="reveal d1">What I actually work with.</h2>
     <div class="sk-grid">
       <div class="reveal d1">
-        <div class="sk-group-lbl">Hardware</div>
+        <div class="sk-group-lbl">Data Engineering</div>
         <div class="sk-list">
-          <div class="sk-item">Component-level diagnostics</div>
-          <div class="sk-item">Electronics assembly &amp; wiring</div>
-          <div class="sk-item">BIOS/UEFI flashing (CH341A)</div>
-          <div class="sk-item">PC troubleshooting</div>
-          <div class="sk-item">Soldering &amp; rework</div>
-          <div class="sk-item">Logic level interfacing</div>
+          <div class="sk-item">SQL Server 2000–2022</div>
+          <div class="sk-item">ETL / ELT design</div>
+          <div class="sk-item">CDC &amp; incremental loads</div>
+          <div class="sk-item">Python for data workflows</div>
+          <div class="sk-item">Parquet pipelines</div>
+          <div class="sk-item">Data modeling &amp; quality</div>
         </div>
       </div>
       <div class="reveal d2">
-        <div class="sk-group-lbl">Embedded &amp; FPV</div>
+        <div class="sk-group-lbl">Cloud &amp; Analytics</div>
         <div class="sk-list">
-          <div class="sk-item">ESP32 / Arduino dev</div>
-          <div class="sk-item">FastLED &amp; WLED</div>
-          <div class="sk-item">CRSF / ELRS protocol</div>
-          <div class="sk-item">iNav flight stack</div>
-          <div class="sk-item">Betaflight</div>
-          <div class="sk-item">DJI / WTFOS ecosystem</div>
+          <div class="sk-item">Snowflake optimization</div>
+          <div class="sk-item">dbt model tuning</div>
+          <div class="sk-item">AWS S3 / Glue / Athena</div>
+          <div class="sk-item">AWS DMS patterns</div>
+          <div class="sk-item">Iceberg tables</div>
+          <div class="sk-item">Power BI dashboards</div>
         </div>
       </div>
       <div class="reveal d3">
-        <div class="sk-group-lbl">3D Printing</div>
+        <div class="sk-group-lbl">Product &amp; Inclusion</div>
         <div class="sk-list">
-          <div class="sk-item">Klipper firmware</div>
-          <div class="sk-item">Mainsail / Moonraker</div>
-          <div class="sk-item">OrcaSlicer profiling</div>
-          <div class="sk-item">Pressure advance tuning</div>
-          <div class="sk-item">Input shaping (ADXL345)</div>
-          <div class="sk-item">Printer modding &amp; repair</div>
+          <div class="sk-item">Technical design docs</div>
+          <div class="sk-item">Patent-style figure planning</div>
+          <div class="sk-item">3D prototype iteration</div>
+          <div class="sk-item">BOM research &amp; sourcing</div>
+          <div class="sk-item">Inclusive safety design</div>
+          <div class="sk-item">Unity / VR product demos</div>
         </div>
       </div>
       <div class="reveal d4">
-        <div class="sk-group-lbl">Infrastructure</div>
+        <div class="sk-group-lbl">Tools &amp; Delivery</div>
         <div class="sk-list">
-          <div class="sk-item">Docker &amp; Portainer</div>
-          <div class="sk-item">Tailscale VPN mesh</div>
-          <div class="sk-item">Home Assistant</div>
-          <div class="sk-item">Nextcloud / self-hosting</div>
-          <div class="sk-item">MQTT / Meshtastic</div>
-          <div class="sk-item">Python scripting</div>
+          <div class="sk-item">GitHub Copilot</div>
+          <div class="sk-item">Cursor</div>
+          <div class="sk-item">VS Code workflows</div>
+          <div class="sk-item">Markdown documentation</div>
+          <div class="sk-item">SQL review &amp; generation</div>
+          <div class="sk-item">Prompt-guided prototyping</div>
         </div>
       </div>
     </div>
@@ -542,13 +1079,13 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
 <section id="interests">
   <div class="int-in">
     <div class="section-label reveal">Interests</div>
-    <h2 class="reveal d1">What keeps me up at night.</h2>
+    <h2 class="reveal d1">What keeps me engaged.</h2>
     <div class="int-grid">
-      <div class="int-card reveal d1"><div class="int-ico">✈️</div><div class="int-name">FPV Aircraft</div><div class="int-sub">Wings &amp; Quads</div></div>
-      <div class="int-card reveal d2"><div class="int-ico">📡</div><div class="int-name">Radio Systems</div><div class="int-sub">LoRa &amp; RC Links</div></div>
-      <div class="int-card reveal d2"><div class="int-ico">🖨️</div><div class="int-name">3D Printing</div><div class="int-sub">Klipper &amp; Beyond</div></div>
-      <div class="int-card reveal d3"><div class="int-ico">⚡</div><div class="int-name">Electronics</div><div class="int-sub">ESP32 &amp; Embedded</div></div>
-      <div class="int-card reveal d3"><div class="int-ico">🖧</div><div class="int-name">Homelab</div><div class="int-sub">Self-Hosted Stack</div></div>
+      <div class="int-card reveal d1"><div class="int-ico">☁️</div><div class="int-name">Data Platforms</div><div class="int-sub">Reliable at Scale</div></div>
+      <div class="int-card reveal d2"><div class="int-ico">🛡️</div><div class="int-name">Inclusive Design</div><div class="int-sub">VERA &amp; Beyond</div></div>
+      <div class="int-card reveal d2"><div class="int-ico">🥽</div><div class="int-name">Spatial Demos</div><div class="int-sub">Unity &amp; VR</div></div>
+      <div class="int-card reveal d3"><div class="int-ico">🖨️</div><div class="int-name">Prototyping</div><div class="int-sub">Fast Iteration</div></div>
+      <div class="int-card reveal d3"><div class="int-ico">🪷</div><div class="int-name">Zen Bones</div><div class="int-sub">Ideas &amp; Meaning</div></div>
     </div>
   </div>
 </section>
@@ -557,25 +1094,25 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
   <div class="con-in">
     <div class="con-left reveal">
       <div class="section-label">Contact</div>
-      <h2>Let's talk shop.</h2>
-      <p>I'm always interested in connecting with people who are building things — whether that's discussing a project, exploring a job opportunity, or just swapping notes on gear. No pitches, no spam.</p>
+      <h2>Let’s build something that helps.</h2>
+      <p>I’m most interested in conversations around senior data engineering, lakehouse architecture, inclusive product design, VERA, Unity/VR demos, and thoughtful systems work. The goal is not noise. The goal is clarity, usefulness, and results that hold up.</p>
       <div class="con-links">
-        <a href="https://github.com/AtareFpv" target="_blank" class="con-link"><span>💻</span> github.com/AtareFpv</a>
-        <a href="https://www.youtube.com/@AtareFpv" target="_blank" class="con-link"><span>▶️</span> youtube.com/@AtareFpv</a>
-        <a href="https://poly.cam/@AtareFpv" target="_blank" class="con-link"><span>🌐</span> poly.cam/@AtareFpv</a>
+        <a href="https://www.youtube.com/@towater" target="_blank" rel="noopener noreferrer" class="con-link"><span>▶️</span> youtube.com/@towater · Zen Bones</a>
+        <div class="con-link"><span>📍</span> Nashville, TN · Open to hybrid / remote opportunities</div>
+        <div class="con-link"><span>🛠️</span> Data platforms, invention, documentation, and thoughtful tooling</div>
       </div>
     </div>
     <div class="con-form reveal d2">
       <div class="fg"><label>Name</label><input type="text" placeholder="Your name"></div>
       <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"></div>
-      <div class="fg"><label>Message</label><textarea rows="5" placeholder="What are you building?"></textarea></div>
-      <button class="btn btn-p" style="align-self:flex-start">Send Message</button>
+      <div class="fg"><label>Message</label><textarea rows="5" placeholder="What are you building or hiring for?"></textarea></div>
+      <button class="btn btn-p" style="align-self:flex-start">Start the conversation</button>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="ft-txt">© 2025 Jonathan W. Smith &nbsp;·&nbsp; Built by hand, not by template.</div>
+  <div class="ft-txt">© 2026 Jamie Towater &nbsp;·&nbsp; Data platforms, inclusive invention, and systems thinking.</div>
   <div class="ft-links">
     <a href="#hero">Top</a>
     <a href="#projects">Projects</a>
@@ -584,10 +1121,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80p
 </footer>
 
 <div class="status-bar">
-  <div class="si"><div class="sdot"></div> All systems nominal</div>
-  <div class="si"><div class="sdot amber"></div> Ender 3 · Printing</div>
-  <div class="si">📡 TMN · 200+ nodes online</div>
-  <div class="si si-r" id="clock-si">⏱ --:--:--</div>
+  <div class="si"><div class="sdot"></div> All systems stable</div>
+  <div class="si"><div class="sdot amber"></div> VERA · In development</div>
+  <div class="si">🪷 Zen Bones · 1.1K subscribers</div>
+  <div class="si si-r" id="clock-si">⏱ 00:00:00</div>
 </div>
 
 <script>
@@ -607,13 +1144,14 @@ window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scro
 
 /* TYPEWRITER — your phrases kept */
 const phrases=[
-  'Hands-on builder & problem solver.',
-  'FPV pilot. Fixed-wing & quads.',
-  'ESP32 tinkerer.',
-  '3D printing & Klipper obsessive.',
-  'Self-hosting Network / Homelab.',
-  'Founding member of Nashville, Tennessee Meshtastic Network.',
-  'Transitioning into tech. One build at a time.',
+  'Senior database developer. Data engineer in practice.',
+  'Make it boring, stable, and correct.',
+  'SQL Server → Parquet → S3 → Iceberg.',
+  'Building VERA around safety, dignity, and access.',
+  'Step inside the VERA Lab in Unity VR.',
+  'Modern tools should serve the work.',
+  'Zen Bones: Alan Watts, Taoism, and consciousness.',
+  'Clarity is a design principle.',
 ];
 let pi=0,ci=0,del=false;
 const tw=document.getElementById('typewriter');
@@ -655,54 +1193,57 @@ sphResize();
 window.addEventListener('resize',sphResize,{passive:true});
 
 const TILE_INFO={
-  'AtareFpv':         {desc:'Builder, tinkerer, and FPV pilot based in Nashville, TN. Everything on this sphere connects back to flying something.',tag:'Identity'},
-  'FPV Aircraft':     {desc:'Fixed-wing and quad FPV platforms — long-range endurance, reliable telemetry, and field repairability.',tag:'FPV / RC'},
-  'AtomRC Dolphin':   {desc:'Primary long-range fixed-wing build. EPP foam running iNav with TBS Crossfire and DJI Vista video. Custom LED nav lighting across multiple airframe rebuilds.',tag:'FPV / RC'},
-  'iNav':             {desc:'GPS-based flight controller firmware for fixed-wing. Autonomous navigation, return-to-home, and CRSF telemetry output.',tag:'Firmware'},
-  'Crossfire / CRSF': {desc:'TBS Crossfire long-range RC link at 900MHz. Single UART connection carries both control and full bidirectional telemetry.',tag:'RC Link'},
-  'DJI Video':        {desc:'DJI Vista digital FPV system rooted with WTFOS — custom OSD fonts, DVR access, and extended configuration.',tag:'FPV Video'},
-  'Betaflight':       {desc:'Flight controller firmware for freestyle and racing quads. PID tuning, motor config, rates, and blackbox logging.',tag:'Firmware'},
-  'ESP32 Dev':        {desc:'Microcontroller development on ESP32. UART, WiFi, BLE, display drivers, and custom firmware written from scratch.',tag:'Embedded'},
-  'WLED / FastLED':   {desc:'LED animation firmware stack. WLED on ESP32-S3 for effects; FastLED for fine-grained animation and custom physical-to-logical mapping.',tag:'Electronics'},
-  'WS2812 LEDs':      {desc:'Addressable RGB LEDs for aircraft nav lighting. Custom strip remapping enables mirrored animations across asymmetric layouts.',tag:'Electronics'},
-  'UART / Serial':    {desc:'Core serial protocol interfacing ESP32 with RC receivers, flight controllers, and telemetry decoders.',tag:'Protocol'},
-  'Firmware Dev':     {desc:'Writing embedded firmware from scratch — CRSF decoder, T-Display-S3 UI, PWM-to-API bridge, custom display drivers.',tag:'Dev'},
-  'Soldering':        {desc:'Component-level electronics — SMD rework, flight stack wiring, sensor integration, connector crimping, PCB assembly.',tag:'Hardware'},
-  'Embedded C':       {desc:'Low-level C/C++ for microcontrollers. Direct hardware access, protocol implementation, and real-time control loops.',tag:'Dev'},
-  'PWM Bridge':       {desc:'XIAO ESP32-C3 reading RC transmitter PWM signals and translating them to WLED HTTP API calls — LED animation control mid-flight.',tag:'Embedded'},
-  'Klipper':          {desc:'Advanced 3D printer firmware on Ender 3 V2. Input shaping, pressure advance, macro scripting, and real-time config via Moonraker API.',tag:'3D Printing'},
-  'OrcaSlicer':       {desc:'Primary slicer. Manually tuned profiles for PLA, PETG, and TPU — including custom YOYI TPU profile via direct JSON editing.',tag:'3D Printing'},
-  '3D Printing':      {desc:'Functional part fabrication on a heavily modded Ender 3 V2. Mounts, enclosures, tools, and components for FPV and electronics.',tag:'3D Printing'},
-  'Bed Mesh':         {desc:'Automatic leveling via CR Touch probe. Klipper generates a compensation mesh and adjusts Z height dynamically during the print.',tag:'Calibration'},
-  'Pressure Advance': {desc:'Klipper feature compensating for filament pressure lag. Tuned to ~0.02 for direct drive — significantly sharper corners and cleaner overhangs.',tag:'Calibration'},
-  'Input Shaping':    {desc:'Resonance compensation using ADXL345 accelerometer data. Eliminates ringing artifacts and enables faster print speeds.',tag:'Calibration'},
-  'Direct Drive':     {desc:'Sprite Pro direct drive extruder upgrade. Short filament path improves retraction precision — critical for flexible materials like TPU.',tag:'Hardware Mod'},
-  'Docker':           {desc:'All homelab services run in isolated Docker containers. Clean separation, easy updates, and fast recovery.',tag:'Infrastructure'},
-  'Portainer':        {desc:'Web UI for Docker management. Container lifecycle, log viewing, stack deployment, and resource monitoring from a browser.',tag:'Infrastructure'},
-  'Tailscale':        {desc:'Zero-config VPN mesh built on WireGuard. Every device on a private encrypted network accessible from anywhere.',tag:'Networking'},
-  'Home Assistant':   {desc:'Open-source home automation running locally in Docker. Smart device control, automations, and integrations — no cloud required.',tag:'Homelab'},
-  'Nextcloud':        {desc:'Self-hosted file sync and sharing. Private cloud storage accessible via Tailscale from any device, anywhere.',tag:'Homelab'},
-  'Uptime Kuma':      {desc:'Self-hosted monitoring dashboard tracking uptime and response times for every homelab service, with push alerts.',tag:'Homelab'},
-  'Moonraker':        {desc:'REST API layer for Klipper. Connects printer firmware to Mainsail, OrcaSlicer, Obico, and other tools over the network.',tag:'3D Printing'},
-  'Obico':            {desc:'AI-powered 3D print monitoring with failure detection. Streams printer camera and alerts on spaghetti or detachment.',tag:'Homelab'},
-  'Linux':            {desc:'Primary OS for servers and embedded systems. CLI, systemd, networking, package management, and shell scripting.',tag:'OS'},
-  'Meshtastic':       {desc:'Open-source LoRa mesh radio firmware. Co-founded the Tennessee Meshtastic Network — 200+ nodes, Nashville metro, live weather alert bot.',tag:'Mesh Radio'},
-  'LoRa Radio':       {desc:'Long Range radio at 915MHz ISM band. Low power, multi-kilometer range — ideal for off-grid and emergency mesh communications.',tag:'Mesh Radio'},
-  'MQTT':             {desc:'Lightweight pub/sub protocol bridging Meshtastic node data to Home Assistant dashboards and the NWS weather alert pipeline.',tag:'Protocol'},
-  'Python':           {desc:'Scripting language powering the NWS weather alert bot, Meshtastic automation tools, and data processing utilities.',tag:'Dev'},
-  'NWS API':          {desc:'NOAA National Weather Service API. Python bot polls for alerts, formats under 200 bytes for LoRa, and broadcasts to the mesh.',tag:'Dev'},
-  'CompTIA A+':       {desc:'Actively pursuing CompTIA A+ alongside hands-on enterprise hardware diagnostics on NVIDIA GB200/B200 AI server systems at Quanta.',tag:'Career'},
+  'Jamie Towater': {desc:'Senior Database Developer, aspiring data engineer, inventor, and systems thinker based in Nashville, Tennessee.',tag:'Identity'},
+  'Data Engineering': {desc:'The center of gravity in my career: reliable pipelines, scalable design, clean transformations, and practical delivery.',tag:'Career'},
+  'SQL Server': {desc:'Core platform for most of my career — administration, tuning, automation, modeling, and production support across multiple versions.',tag:'Database'},
+  'Snowflake': {desc:'Cloud analytics platform where I focused on performance-minded design and real cost reduction through smarter modeling.',tag:'Analytics'},
+  'dbt': {desc:'Transformation framework used to organize logic more cleanly, reduce waste, and make data work easier to reason about.',tag:'Transformation'},
+  'AWS': {desc:'The cloud layer for my lakehouse thinking: S3, Glue, Athena, DMS, and the patterns needed to move data there well.',tag:'Cloud'},
+  'Iceberg': {desc:'A strong fit for large analytical tables when you want open-table semantics, incremental loads, and ACID-friendly behavior on object storage.',tag:'Lakehouse'},
+  'Python': {desc:'Used for automation, data processing, helper scripts, and turning ideas into working tools faster than boilerplate-heavy alternatives.',tag:'Dev'},
+  'Parquet': {desc:'Columnar format I repeatedly come back to for moving SQL data efficiently into cloud storage and analytics workflows.',tag:'Data Format'},
+  'S3': {desc:'Durable cloud storage layer for raw and curated data, prototypes, exports, and future-facing lakehouse patterns.',tag:'Cloud'},
+  'Glue': {desc:'Serverless metadata and ETL layer that fits well when the goal is simple, scalable orchestration without overbuilding.',tag:'Cloud'},
+  'Athena': {desc:'Query layer for exploring S3-backed datasets and validating lakehouse patterns without standing up more infrastructure than necessary.',tag:'Analytics'},
+  'DMS': {desc:'Useful for incremental movement and CDC strategies when modernizing legacy data sources into AWS.',tag:'Migration'},
+  'Power BI': {desc:'Operational reporting and visualization layer for turning data work into something people can actually consume.',tag:'BI'},
+  'Documentation': {desc:'A real strength: markdown docs, architecture notes, POCs, and technical explanations that make complex work usable by others.',tag:'Delivery'},
+  'VERA': {desc:'My most ambitious product concept: an accessibility-forward nail-care device designed around a nail-only interface, cleaner outcomes, and differentiated safety.',tag:'Inventor'},
+  'Inclusive Design': {desc:'VERA is being shaped around independence, dignity, and safer self-care — especially for people with visual, dexterity, neuropathy, or age-related challenges.',tag:'Mission'},
+  'Safety Layers': {desc:'The heart of VERA: multiple independent protections that reduce the chance of soft-tissue contact and unsafe user behavior.',tag:'Safety'},
+  'Magnetic Cartridge': {desc:'A self-aligning cartridge idea that reduces pinch-force complexity, simplifies insertion, and can double as presence sensing.',tag:'Accessibility'},
+  'Haptic Guidance': {desc:'Distinct vibration patterns can help a user find the right position, confirm alignment, and know when a pass is complete — even without looking.',tag:'Accessibility'},
+  'Capacitive Auto-Stop': {desc:'A future sensing layer intended to distinguish nail from nearby skin and kill the motor when the wrong material reaches the wrong zone.',tag:'Safety'},
+  'Self-Healing Membrane': {desc:'A forward-looking membrane concept: medical silicone now, but potentially self-healing elastomers later to extend cartridge life.',tag:'Materials'},
+  'Infinity Drum': {desc:'A DLC-coated stainless drum concept — hard, biocompatible, and durable enough to become an “infinity” wear surface instead of a disposable abrasive.',tag:'Materials'},
+  'Sealed Cartridge': {desc:'A strong differentiator for VERA — containment, serviceability, cleanliness, and replaceable working elements all in one directionally strong concept.',tag:'Product'},
+  'Finished Edge Polish': {desc:'Potentially the most marketable part of VERA: not just trimming, but a repeatable polished finish people can see and feel immediately.',tag:'Experience'},
+  'Copilot': {desc:'Used to accelerate SQL, code scaffolding, tests, and documentation while keeping human judgment in the driver’s seat.',tag:'Tooling'},
+  'Cursor': {desc:'A strong complement to Copilot for broader codebase reasoning, rewriting, and moving faster through large technical tasks.',tag:'Tooling'},
+  'VS Code': {desc:'My main working environment for SQL, Python, docs, architecture sketches, and modern development workflows.',tag:'Tooling'},
+  'Architecture POCs': {desc:'I like turning abstract architecture debates into something concrete enough to evaluate with tradeoffs, diagrams, and implementation paths.',tag:'Strategy'},
+  'VERA Lab VR': {desc:'A Unity-based virtual lab where people can inspect VERA, watch the mechanism, compare variants, and understand the idea spatially instead of through flat slides.',tag:'Spatial Demo'},
+  'Career Direction': {desc:'I’m moving toward senior data engineering roles — Amazon-caliber if the fit is right — where scale, ownership, stability, and builder judgment matter.',tag:'Career'},
+  'Healthcare Data': {desc:'The domain context behind most of my enterprise experience — high-stakes data where reliability and correctness matter.',tag:'Domain'},
+  'Prototype Lab': {desc:'3D prints, fixtures, BOMs, magnets, O-rings, and fast iteration loops that turn abstract safety ideas into physical tradeoffs.',tag:'Prototype'},
+  'Zen Bones': {desc:'My YouTube channel focused on Alan Watts, Taoism, Zen, consciousness, and the kinds of ideas that make people think more deeply.',tag:'Media'},
+  'Alan Watts': {desc:'A recurring voice on Zen Bones and a major influence on how I think about ego, perspective, and the illusion of separateness.',tag:'Philosophy'},
+  'Taoism': {desc:'A thread that balances striving with flow — useful not just philosophically, but in how I approach systems and life.',tag:'Philosophy'},
+  'Zen': {desc:'Directness, clarity, and stripping away what is unnecessary. A surprisingly good lens for engineering too.',tag:'Philosophy'},
+  'Consciousness': {desc:'One of the deeper themes behind Zen Bones: identity, awareness, selfhood, and what is actually going on underneath experience.',tag:'Ideas'},
+  'Clarity': {desc:'The Zen Bones side of me shows up here too: strip away noise, keep what works, and let form follow understanding.',tag:'Philosophy'},
+  'Nashville, TN': {desc:'Home base for both my enterprise technology work and the projects I’m building outside of it.',tag:'Location'},
 };
 
 /* Ring definitions — lat/lon grid */
 const RING_DEFS=[
-  {phi:0,              labels:['AtareFpv']},
-  {phi:Math.PI/6,      labels:['FPV Aircraft','AtomRC Dolphin','iNav','Crossfire / CRSF','DJI Video','Betaflight']},
-  {phi:Math.PI/3,      labels:['ESP32 Dev','WLED / FastLED','WS2812 LEDs','UART / Serial','Firmware Dev','Soldering','Embedded C','PWM Bridge']},
-  {phi:Math.PI/2,      labels:['Klipper','OrcaSlicer','3D Printing','Bed Mesh','Pressure Advance','Input Shaping','Direct Drive','Docker','Portainer','Tailscale']},
-  {phi:Math.PI*2/3,    labels:['Home Assistant','Nextcloud','Uptime Kuma','Moonraker','Obico','Linux']},
-  {phi:Math.PI*5/6,    labels:['Meshtastic','LoRa Radio','MQTT','Python','NWS API']},
-  {phi:Math.PI,        labels:['CompTIA A+']},
+  {phi:0, labels:["Jamie Towater"]},
+  {phi:Math.PI/6, labels:["Data Engineering", "SQL Server", "Snowflake", "dbt", "AWS", "Iceberg"]},
+  {phi:Math.PI/3, labels:["Python", "Parquet", "S3", "Glue", "Athena", "DMS", "Power BI", "Documentation"]},
+  {phi:Math.PI/2, labels:["VERA", "Inclusive Design", "Safety Layers", "Magnetic Cartridge", "Haptic Guidance", "Capacitive Auto-Stop", "Self-Healing Membrane", "Infinity Drum", "Sealed Cartridge", "Finished Edge Polish"]},
+  {phi:Math.PI*2/3, labels:["Copilot", "Cursor", "VS Code", "Architecture POCs", "VERA Lab VR", "Career Direction", "Healthcare Data", "Prototype Lab"]},
+  {phi:Math.PI*5/6, labels:["Zen Bones", "Alan Watts", "Taoism", "Zen", "Consciousness", "Clarity"]},
+  {phi:Math.PI, labels:["Nashville, TN"]},
 ];
 
 /* Build nodes and edge lists */
@@ -944,5 +1485,6 @@ document.getElementById('hero').addEventListener('mousemove',e=>{
     <span class="sph-popup-tag" id="sph-popup-tag"></span>
   </div>
 </div>
-</body>
-</html>
+
+
+</body></html>
