@@ -3,739 +3,946 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jamie - Builder</title>
-<meta name="description" content="FPV aircraft, ESP32 projects, 3D printing, and embedded electronics. Building things that fly, glow, and compute.">
+<title>Jonathan W. Smith — Builder / Maker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-dark: #0a0e14;
-  --bg-card: #141922;
-  --bg-card-hover: #1a1f2e;
-  --text-primary: #e6edf3;
-  --text-secondary: #8b93a0;
-  --text-muted: #5d6773;
-  --accent: #00d4ff;
-  --accent-glow: rgba(0, 212, 255, 0.15);
-  --border: rgba(134, 144, 156, 0.15);
-  --shadow: rgba(0, 0, 0, 0.5);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0b0c;
+  --bg2:#0f1112;
+  --surface:#151719;
+  --surface2:#1b1d1f;
+  --border:#222527;
+  --border2:#2e3234;
+  --accent:#e9a020;
+  --accent2:#f0b848;
+  --accent-glow:rgba(233,160,32,0.22);
+  --accent-dim:rgba(233,160,32,0.09);
+  --text:#dedad4;
+  --text2:#9a9692;
+  --text3:#4e4c49;
+  --green:#4ade80;
+  --blue:#60a5fa;
+  --purple:#c084fc;
+  --teal:#2dd4bf;
+  --font-d:'Syne',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+  --font-b:'Lora',serif;
+  --r:6px;
+  --r2:12px;
+  --maxw:1080px;
+  --sp:110px;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-dark);
-  color: var(--text-primary);
-  line-height: 1.6;
-  font-size: 16px;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--font-b);
+  font-size:16.5px;line-height:1.78;overflow-x:hidden;cursor:none;padding-bottom:24px;
 }
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* Animated grid background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  pointer-events: none;
-  z-index: 0;
-  animation: gridSlide 20s linear infinite;
+/* CURSOR */
+.cur{position:fixed;pointer-events:none;z-index:9999;top:0;left:0}
+.cur-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;position:absolute;transform:translate(-50%,-50%);mix-blend-mode:screen}
+.cur-ring{width:30px;height:30px;border:1.5px solid rgba(233,160,32,.45);border-radius:50%;position:absolute;transform:translate(-50%,-50%);transition:width .22s,height .22s,border-color .22s}
+.cur-ring.hovered{width:46px;height:46px;border-color:var(--accent)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:60px;display:flex;align-items:center;padding:0 52px;z-index:200;transition:background .4s,border-bottom .4s}
+nav.scrolled{background:rgba(10,11,12,.88);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+.nav-logo{font-family:var(--font-m);font-size:12.5px;letter-spacing:.05em;color:var(--text);text-decoration:none;margin-right:auto}
+.nav-logo span{color:var(--accent)}
+.nav-links{list-style:none;display:flex;gap:36px}
+.nav-links a{font-family:var(--font-m);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+
+/* HERO */
+#hero{position:relative;height:100vh;min-height:680px;display:flex;flex-direction:column;justify-content:center;padding:0 80px;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-noise{position:absolute;inset:0;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025}
+.hero-content{position:relative;z-index:1;max-width:var(--maxw)}
+.hero-pre{font-family:var(--font-m);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;opacity:0;animation:fU .8s .25s forwards}
+.hero-name{font-family:var(--font-d);font-size:clamp(48px,8.5vw,112px);font-weight:800;line-height:.9;letter-spacing:-.03em;color:var(--text);margin-bottom:24px;opacity:0;animation:fU .9s .45s forwards}
+.hero-name em{display:block;font-style:normal;color:transparent;-webkit-text-stroke:1.5px rgba(218,215,210,.18)}
+.hero-tag{font-family:var(--font-m);font-size:13px;color:var(--text2);margin-bottom:44px;min-height:20px;display:flex;align-items:center;opacity:0;animation:fU .9s .75s forwards}
+.tw-cursor{display:inline-block;width:2px;height:.9em;background:var(--accent);vertical-align:text-bottom;animation:blink 1s step-end infinite}
+.hero-cta{display:flex;gap:14px;opacity:0;animation:fU .9s 1.05s forwards}
+.btn{font-family:var(--font-m);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;padding:11px 26px;border-radius:var(--r);transition:all .22s;display:inline-flex;align-items:center;gap:7px;border:none;cursor:pointer}
+.btn-p{background:var(--accent);color:#000;font-weight:600}
+.btn-p:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 32px var(--accent-glow)}
+.btn-o{border:1px solid var(--border2);color:var(--text2)}
+.btn-o:hover{border-color:var(--accent);color:var(--accent)}
+.hero-scroll{position:absolute;bottom:36px;left:80px;font-family:var(--font-m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:12px;opacity:0;animation:fU .9s 1.5s forwards}
+.hero-scroll::before{content:'';width:1px;height:38px;background:linear-gradient(to bottom,transparent,var(--text3))}
+.hero-stats{position:absolute;right:80px;bottom:36px;display:flex;flex-direction:column;gap:22px;text-align:right;opacity:0;animation:fU .9s 1.3s forwards}
+.stat-v{font-family:var(--font-d);font-size:30px;font-weight:700;color:var(--text);line-height:1}
+.stat-l{font-family:var(--font-m);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-top:2px}
+@keyframes fU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* SECTION COMMON */
+.section-label{font-family:var(--font-m);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.section-label::after{content:'';width:48px;height:1px;background:var(--accent);opacity:.4}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ABOUT */
+#about{background:var(--bg2);padding:var(--sp) 80px}
+.about-in{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start}
+.about-left h2{font-family:var(--font-d);font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:24px;line-height:1.05}
+.about-left p{color:var(--text2);margin-bottom:16px;font-size:15.5px;line-height:1.82}
+.about-left p strong{color:var(--text);font-weight:500}
+.about-left p em{font-style:italic;color:var(--text)}
+.tl{display:flex;flex-direction:column}
+.tl-item{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-bottom:32px}
+.tl-item:last-child{padding-bottom:0}
+.tl-spine{display:flex;flex-direction:column;align-items:center}
+.tl-dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow);flex-shrink:0;margin-top:4px}
+.tl-line{width:1px;flex:1;min-height:24px;margin-top:6px;background:linear-gradient(to bottom,var(--accent),var(--border))}
+.tl-item:last-child .tl-line{display:none}
+.tl-era{font-family:var(--font-m);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.tl-title{font-family:var(--font-d);font-size:17px;font-weight:600;color:var(--text);margin-bottom:5px}
+.tl-desc{font-family:var(--font-b);font-size:13.5px;color:var(--text2);line-height:1.65}
+
+/* PROJECTS */
+#projects{background:var(--bg);padding:var(--sp) 80px}
+.proj-hdr{max-width:var(--maxw);margin:0 auto 52px;display:flex;justify-content:space-between;align-items:flex-end}
+.proj-hdr h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,48px);font-weight:700;letter-spacing:-.02em;color:var(--text)}
+.proj-ct{font-family:var(--font-m);font-size:10px;color:var(--text3);letter-spacing:.12em}
+.proj-grid{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column}
+.pcard:hover{border-color:rgba(233,160,32,.5);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.45)}
+.pcard.feat{grid-column:span 2}
+.card-bar{height:2px;background:linear-gradient(90deg,var(--accent),transparent)}
+.card-bar.blue{background:linear-gradient(90deg,var(--blue),transparent)}
+.card-bar.purple{background:linear-gradient(90deg,var(--purple),transparent)}
+.card-bar.teal{background:linear-gradient(90deg,var(--teal),transparent)}
+.card-bar.green{background:linear-gradient(90deg,var(--green),transparent)}
+.card-top{padding:20px 22px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.card-ico{font-size:26px;line-height:1}
+.card-tag{font-family:var(--font-m);font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;padding:3px 7px;border-radius:3px;border:1px solid}
+.tag-fpv{color:var(--blue);border-color:rgba(96,165,250,.3)}
+.tag-esp{color:var(--green);border-color:rgba(74,222,128,.3)}
+.tag-led{color:var(--accent);border-color:rgba(233,160,32,.3)}
+.tag-3dp{color:var(--purple);border-color:rgba(192,132,252,.3)}
+.tag-lab{color:var(--teal);border-color:rgba(45,212,191,.3)}
+.card-body{padding:14px 22px 18px;flex:1}
+.card-title{font-family:var(--font-d);font-size:19px;font-weight:600;color:var(--text);margin-bottom:7px;letter-spacing:-.01em}
+.card-desc{font-family:var(--font-b);font-size:13.5px;color:var(--text2);line-height:1.65;margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-family:var(--font-m);font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;padding:2.5px 7px;background:var(--surface2);border-radius:3px;color:var(--text3)}
+.card-btn{display:flex;align-items:center;gap:6px;width:100%;font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);background:none;border:none;border-top:1px solid var(--border);padding:11px 22px;transition:color .2s;cursor:pointer}
+.card-btn:hover{color:var(--accent)}
+.card-btn .arr{width:10px;height:10px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-left:auto;transition:transform .3s}
+.card-btn[aria-expanded="true"] .arr{transform:rotate(-135deg)}
+.card-expand{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.card-expand.open{max-height:400px}
+.expand-in{padding:16px 22px 20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:9px}
+.exp-row{display:flex;gap:10px}
+.exp-lbl{font-family:var(--font-m);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);min-width:68px;padding-top:1px;flex-shrink:0}
+.exp-val{font-family:var(--font-b);font-size:13px;color:var(--text2);line-height:1.6}
+
+/* SPHERE */
+#sphere-sec{background:var(--bg2);padding:var(--sp) 80px;overflow:hidden;}
+.sph-lay{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.sph-txt h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:18px}
+.sph-txt p{color:var(--text2);font-size:15px;line-height:1.75;margin-bottom:14px}
+.sph-hint{font-family:var(--font-m);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-top:22px}
+.sph-wrap{position:relative;width:480px;height:480px;margin:0 auto;cursor:grab;overflow:hidden;}
+.sph-wrap:active{cursor:grabbing}
+#sph-canvas{position:absolute;top:0;left:0;pointer-events:none;}
+#sph-labels{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+.sph-tile{
+  position:absolute;
+  font-family:var(--font-m);font-size:10px;letter-spacing:.05em;white-space:nowrap;
+  padding:3px 9px;border-radius:3px;border:1px solid rgba(255,255,255,.09);
+  background:rgba(21,23,25,.88);color:var(--text2);
+  cursor:pointer;user-select:none;pointer-events:auto;
+  transform-origin:center center;
+  transition:color .2s,border-color .2s,background .2s,box-shadow .2s;
 }
-
-@keyframes gridSlide {
-  0% { background-position: 0 0; }
-  100% { background-position: 50px 50px; }
+.sph-tile:hover{
+  color:var(--accent);border-color:rgba(233,160,32,.55);
+  background:rgba(233,160,32,.1);
+  box-shadow:0 0 14px rgba(233,160,32,.22);
 }
-
-/* Radial glow overlay */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 20%, rgba(0, 212, 255, 0.08), transparent 60%);
-  pointer-events: none;
-  z-index: 0;
+/* Popup — position:fixed so it escapes overflow:hidden */
+.sph-popup{
+  display:none;position:fixed;width:260px;
+  background:rgba(8,9,10,.97);border-radius:10px;overflow:hidden;
+  z-index:9001;pointer-events:none;
+  box-shadow:0 24px 64px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.04);
 }
+.sph-popup.vis{display:block;}
+.sph-popup-img{width:100%;height:140px;overflow:hidden;background:var(--surface2);display:block;position:relative;opacity:0;}
+.sph-popup.vis .sph-popup-img{animation:ppSlide .5s ease .6s both;}
+.sph-popup-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.88) saturate(1.1);}
+.sph-popup-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);background:var(--surface2);}
+.sph-popup-body{padding:13px 15px 14px;opacity:0;}
+.sph-popup.vis .sph-popup-body{animation:ppSlide .45s ease .82s both;}
+@keyframes ppSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sph-popup-title{font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:-.01em;line-height:1.2;}
+.sph-popup-desc{font-family:var(--font-b);font-size:11.5px;color:var(--text2);line-height:1.68;margin:0;}
+.sph-popup-tag{display:inline-block;margin-top:8px;font-family:var(--font-m);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);opacity:.7;}
+/* SKILLS */
+#skills{background:var(--bg);padding:var(--sp) 80px}
+.sk-in{max-width:var(--maxw);margin:0 auto}
+.sk-in h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:48px}
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.sk-group-lbl{font-family:var(--font-m);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.sk-list{display:flex;flex-direction:column;gap:7px}
+.sk-item{display:flex;align-items:center;gap:9px;font-family:var(--font-m);font-size:11.5px;color:var(--text2);transition:color .2s}
+.sk-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .2s}
+.sk-item:hover{color:var(--text)}
+.sk-item:hover::before{background:var(--accent)}
 
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 32px;
-  position: relative;
-  z-index: 1;
-}
+/* INTERESTS */
+#interests{background:var(--bg2);padding:var(--sp) 80px}
+.int-in{max-width:var(--maxw);margin:0 auto}
+.int-in h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:48px}
+.int-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.int-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:26px 18px;text-align:center;transition:border-color .3s,transform .3s}
+.int-card:hover{border-color:rgba(233,160,32,.45);transform:translateY(-2px)}
+.int-ico{font-size:30px;margin-bottom:10px}
+.int-name{font-family:var(--font-d);font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.int-sub{font-family:var(--font-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
 
-/* ========== HERO ========== */
-.hero {
-  min-height: 85vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 120px 0 80px;
-  position: relative;
-}
+/* CONTACT */
+#contact{background:var(--bg);padding:var(--sp) 80px}
+.con-in{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.con-left h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:18px}
+.con-left p{color:var(--text2);font-size:15px;line-height:1.8;margin-bottom:28px}
+.con-links{display:flex;flex-direction:column;gap:10px}
+.con-link{display:flex;align-items:center;gap:12px;font-family:var(--font-m);font-size:11.5px;letter-spacing:.04em;color:var(--text2);text-decoration:none;padding:11px 15px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);transition:all .22s}
+.con-link:hover{color:var(--accent);border-color:rgba(233,160,32,.4)}
+.con-link span{font-size:15px}
+.con-form{display:flex;flex-direction:column;gap:15px}
+.fg{display:flex;flex-direction:column;gap:7px}
+.fg label{font-family:var(--font-m);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3)}
+.fg input,.fg textarea{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;font-family:var(--font-m);font-size:12.5px;color:var(--text);outline:none;transition:border-color .22s;resize:none}
+.fg input:focus,.fg textarea:focus{border-color:rgba(233,160,32,.5)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text3)}
 
-.hero-content {
-  max-width: 880px;
-}
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:26px 80px;display:flex;justify-content:space-between;align-items:center}
+.ft-txt{font-family:var(--font-m);font-size:10px;color:var(--text3);letter-spacing:.05em}
+.ft-links{display:flex;gap:22px}
+.ft-links a{font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s}
+.ft-links a:hover{color:var(--accent)}
 
-.hero h1 {
-  font-family: 'Sora', sans-serif;
-  font-weight: 600;
-  font-size: clamp(48px, 8vw, 96px);
-  line-height: 1.1;
-  margin-bottom: 24px;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* STATUS BAR */
+.status-bar{position:fixed;bottom:0;left:0;right:0;height:22px;background:rgba(10,11,12,.95);border-top:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 14px;gap:18px;backdrop-filter:blur(8px)}
+.si{display:flex;align-items:center;gap:5px;font-family:var(--font-m);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:sbpulse 2.8s ease-in-out infinite}
+.sdot.amber{background:var(--accent)}
+@keyframes sbpulse{0%,100%{opacity:1}50%{opacity:.25}}
+.si-r{margin-left:auto}
 
-.hero .tagline {
-  font-family: 'Sora', sans-serif;
-  font-size: clamp(20px, 3vw, 28px);
-  color: var(--text-secondary);
-  margin-bottom: 32px;
-  font-weight: 300;
-}
-
-.hero .bio {
-  font-size: 18px;
-  color: var(--text-secondary);
-  max-width: 680px;
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
-
-.hero .bio strong {
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.hero-nav {
-  display: flex;
-  gap: 16px;
-  margin-top: 48px;
-  flex-wrap: wrap;
-}
-
-.hero-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.hero-nav a:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-glow);
-  transform: translateY(-2px);
-}
-
-/* ========== SECTION HEADERS ========== */
-section {
-  padding: 80px 0;
-}
-
-.section-header {
-  margin-bottom: 60px;
-}
-
-.section-header h2 {
-  font-family: 'Sora', sans-serif;
-  font-size: clamp(32px, 5vw, 48px);
-  font-weight: 600;
-  margin-bottom: 12px;
-  letter-spacing: -0.01em;
-}
-
-.section-header .subtitle {
-  font-size: 18px;
-  color: var(--text-secondary);
-  max-width: 700px;
-}
-
-/* ========== PROJECT CARDS ========== */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-.project-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-.project-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 8px 32px var(--shadow), 0 0 0 1px var(--accent);
-}
-
-.project-card.expanded {
-  grid-column: 1 / -1;
-  background: var(--bg-card-hover);
-  border-color: var(--accent);
-}
-
-.card-header {
-  padding: 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.card-title {
-  font-family: 'Sora', sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--text-primary);
-}
-
-.card-summary {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.expand-icon {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(0, 212, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  font-size: 18px;
-  color: var(--accent);
-}
-
-.project-card:hover .expand-icon {
-  background: rgba(0, 212, 255, 0.2);
-  transform: rotate(90deg);
-}
-
-.project-card.expanded .expand-icon {
-  transform: rotate(45deg);
-}
-
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 0 24px 20px;
-}
-
-.tag {
-  font-size: 11px;
-  padding: 4px 10px;
-  background: rgba(0, 212, 255, 0.08);
-  color: var(--accent);
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-  border: 1px solid rgba(0, 212, 255, 0.15);
-}
-
-.card-details {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.project-card.expanded .card-details {
-  max-height: 2000px;
-}
-
-.card-details-content {
-  padding: 24px;
-  border-top: 1px solid var(--border);
-}
-
-.detail-section {
-  margin-bottom: 24px;
-}
-
-.detail-section h4 {
-  font-family: 'Sora', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.detail-section p, .detail-section ul {
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.detail-section ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.detail-section li {
-  padding-left: 20px;
-  position: relative;
-  margin-bottom: 8px;
-}
-
-.detail-section li::before {
-  content: "->";
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-}
-
-/* ========== TECH STACK ========== */
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-}
-
-.tech-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  transition: all 0.3s ease;
-  font-family: 'Sora', sans-serif;
-  font-weight: 500;
-  font-size: 15px;
-}
-
-.tech-item:hover {
-  border-color: var(--accent);
-  background: var(--bg-card-hover);
-  box-shadow: 0 4px 16px var(--accent-glow);
-  transform: translateY(-2px);
-}
-
-.tech-item .category {
-  display: block;
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 400;
-}
-
-/* ========== FOOTER ========== */
-.footer {
-  padding: 60px 0 40px;
-  border-top: 1px solid var(--border);
-  margin-top: 80px;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-}
-
-.footer-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-}
-
-.footer-links a:hover {
-  color: var(--accent);
-}
-
-.footer-credit {
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-/* ========== ANIMATIONS ========== */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hero-content, .section-header, .project-card, .tech-item {
-  animation: fadeInUp 0.8s ease-out both;
-}
-
-.hero-content { animation-delay: 0.1s; }
-.section-header { animation-delay: 0.2s; }
-.project-card:nth-child(1) { animation-delay: 0.3s; }
-.project-card:nth-child(2) { animation-delay: 0.4s; }
-.project-card:nth-child(3) { animation-delay: 0.5s; }
-.project-card:nth-child(4) { animation-delay: 0.6s; }
-.project-card:nth-child(5) { animation-delay: 0.7s; }
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 768px) {
-  .container { padding: 0 20px; }
-  .hero { min-height: 70vh; padding: 80px 0 60px; }
-  section { padding: 60px 0; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .tech-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-content { flex-direction: column; align-items: flex-start; }
+/* RESPONSIVE */
+@media(max-width:960px){
+  :root{--sp:72px}
+  #hero,#about,#projects,#skills,#interests,#contact,footer,#sphere-sec{padding-left:24px;padding-right:24px}
+  .hero-stats,.hero-scroll{display:none}
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .about-in,.sph-lay,.con-in{grid-template-columns:1fr;gap:40px}
+  .proj-grid{grid-template-columns:1fr}
+  .pcard.feat{grid-column:span 1}
+  .sph-wrap{width:300px;height:300px}
+  .sk-grid{grid-template-columns:1fr 1fr;gap:20px}
+  .int-grid{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-content">
-      <h1>Jamie</h1>
-      <p class="tagline">Building things that fly, glow, and compute.</p>
-      <p class="bio">From hands-on problem solving to exploring novel tech. Somewhere between <strong>FPV aircraft</strong>, <strong>ESP32 projects</strong>, <strong>LED systems</strong>, and <strong>3D printing</strong> lies an interest in <strong>zero point energy</strong> and the fundamental mechanics of things that should not work - but do.</p>
-      <p class="bio">Maker, tinkerer, builder. Currently deep in iNav flight controllers, Crossfire telemetry, and Klipper-modded 3D printers.</p>
-      <nav class="hero-nav">
-        <a href="#projects">View Projects</a>
-        <a href="#tech">Tech Stack</a>
-        <a href="https://github.com/" target="_blank" rel="noopener">GitHub -></a>
-      </nav>
+<div class="cur" id="cur">
+  <div class="cur-dot" id="cdot"></div>
+  <div class="cur-ring" id="cring"></div>
+</div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">JW<span>.</span>Smith</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#interests">Interests</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-noise"></div>
+  <div class="hero-content">
+    <p class="hero-pre">// Nashville, TN &nbsp;·&nbsp; Builder &nbsp;·&nbsp; Maker</p>
+    <h1 class="hero-name">Jonathan<br><em>W. Smith</em></h1>
+    <p class="hero-tag"><span id="typewriter"></span><span class="tw-cursor"></span></p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-p">View Projects</a>
+      <a href="#about" class="btn btn-o">About Me</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll to explore</div>
+  <div class="hero-stats">
+    <div><div class="stat-v">5+</div><div class="stat-l">Active Projects</div></div>
+    <div><div class="stat-v">200+</div><div class="stat-l">Node Mesh Network</div></div>
+    <div><div class="stat-v">∞</div><div class="stat-l">Things to Build</div></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-in">
+    <div class="about-left reveal">
+      <div class="section-label">About</div>
+      <h2>Hands-on first.<br>Tech always.</h2>
+      <p>I came up through <strong>Home repair, Property Maintenance and Operations</strong> — work that taught me how to diagnose problems fast, improvise solutions under pressure, and actually finish things. Not theory. Real stuff, with real consequences.</p>
+      <p>Over time, my interests shifted. Every time something broke I wanted to understand it deeper — not just fix it but <em>know why it failed</em>. That curiosity led me into electronics, firmware, networking, and eventually building tools from scratch.</p>
+      <p>Now I'm doing work I genuinely care about: <strong>embedded systems, FPV aircraft, 3D printing, self-hosted infrastructure, and custom electronics</strong>. Not because it looks good on a list, but because I can't stop building things.</p>
+      <p>I'm actively transitioning into tech — pursuing hardware-adjacent IT and support roles where practical problem-solving matters as much as the certificate.</p>
+    </div>
+    <div class="reveal d2">
+      <div class="section-label">Story</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div>
+            <div class="tl-era">The foundation</div>
+            <div class="tl-title">Maintenance &amp; Operations</div>
+            <div class="tl-desc">Managed systems across large residential and commercial properties. Learned to diagnose, prioritize, and fix — fast. Real-world troubleshooting under real stakes.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div>
+            <div class="tl-era">The shift</div>
+            <div class="tl-title">Maker Rabbit Hole</div>
+            <div class="tl-desc">FPV drones, 3D printing, ESP32 projects. Started modding, then building from scratch. Klipper, Betaflight, Meshtastic, custom firmware — each one teaching something new.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div>
+            <div class="tl-era">Going deeper</div>
+            <div class="tl-title">Homelab &amp; Infrastructure</div>
+            <div class="tl-desc">Self-hosted Docker stack, VPN mesh, remote monitoring, Nextcloud, Home Assistant. Started thinking in systems — services, uptime, dependencies, access control.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div>
+            <div class="tl-era">Right now</div>
+            <div class="tl-title">Hardware Diagnostics &amp; IT Transition</div>
+            <div class="tl-desc">Performing component-level diagnostics on enterprise AI server hardware. Pursuing CompTIA A+. Building toward IT support and hardware-focused tech roles.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ===== PROJECTS ===== -->
 <section id="projects">
-  <div class="container">
-    <div class="section-header">
-      <h2>Projects</h2>
-      <p class="subtitle">Click any card to expand details. Real-world builds, tested and documented.</p>
+  <div class="proj-hdr reveal">
+    <div>
+      <div class="section-label">Projects</div>
+      <h2>Things I've built.</h2>
+    </div>
+    <div class="proj-ct">06 featured builds</div>
+  </div>
+  <div class="proj-grid">
+
+    <div class="pcard feat reveal d1" style="display:grid;grid-template-columns:1.2fr 1fr">
+      <div style="display:flex;flex-direction:column">
+        <div class="card-bar"></div>
+        <div class="card-top"><div class="card-ico">📡</div><span class="card-tag tag-esp">ESP32</span></div>
+        <div class="card-body" style="flex:1">
+          <div class="card-title">ESP32 Telemetry Ground Station</div>
+          <div class="card-desc">Standalone RC ground station built on an ESP32-S3 T-Display. Receives live Crossfire telemetry via UART, decodes CRSF protocol, and displays GPS, altitude, voltage, heading, and signal strength on a custom UI.</div>
+          <div class="chips"><span class="chip">ESP32-S3</span><span class="chip">CRSF / Crossfire</span><span class="chip">UART</span><span class="chip">iNav</span><span class="chip">FastLED</span></div>
+        </div>
+        <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+        <div class="card-expand"><div class="expand-in">
+          <div class="exp-row"><span class="exp-lbl">Platform</span><span class="exp-val">ESP32-S3 T-Display-S3, Crossfire Nano RX</span></div>
+          <div class="exp-row"><span class="exp-lbl">Protocol</span><span class="exp-val">CRSF telemetry over UART — decoded from scratch in firmware</span></div>
+          <div class="exp-row"><span class="exp-lbl">Displays</span><span class="exp-val">Summary, GPS coordinates, radar view, artificial horizon — multiple switchable views</span></div>
+          <div class="exp-row"><span class="exp-lbl">Planned</span><span class="exp-val">MSP forwarding for ground tool compatibility; ELRS and mLRS support</span></div>
+          <div class="exp-row"><span class="exp-lbl">Goal</span><span class="exp-val">Portable, modular, and beginner-friendly — designed to run on any ESP32 target</span></div>
+        </div></div>
+      </div>
+      <div style="background:var(--surface2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:0 var(--r2) var(--r2) 0">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(74,222,128,.12),transparent 65%)"></div>
+        <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="font-size:64px">📡</div>
+          <div style="font-family:var(--font-m);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);opacity:.8">Signal Active</div>
+        </div>
+      </div>
     </div>
 
-    <div class="projects-grid">
-
-      <!-- Project 1: AtomRC Dolphin -->
-      <div class="project-card" onclick="toggleCard(this)">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">AtomRC Dolphin FPV Wing</h3>
-            <p class="card-summary">Long-range FPV flying wing build with iNav autonomous flight capabilities</p>
-          </div>
-          <div class="expand-icon">+</div>
-        </div>
-        <div class="card-tags">
-          <span class="tag">FPV</span>
-          <span class="tag">iNav</span>
-          <span class="tag">Crossfire</span>
-          <span class="tag">GPS</span>
-        </div>
-        <div class="card-details">
-          <div class="card-details-content">
-            <div class="detail-section">
-              <h4>Overview</h4>
-              <p>AtomRC Dolphin configured as a long-range autonomous FPV platform. iNav flight controller handles waypoint missions, return-to-home, and position hold. TBS Crossfire for extended range control and telemetry.</p>
-            </div>
-            <div class="detail-section">
-              <h4>Key Features</h4>
-              <ul>
-                <li>iNav 7.x with GPS position hold and autonomous missions</li>
-                <li>TBS Crossfire RX for 10km+ range</li>
-                <li>Custom OSD layout with telemetry overlays</li>
-                <li>Tuned PID loops for smooth flight in wind</li>
-                <li>Return-to-home failsafe tested at 3km+ distance</li>
-              </ul>
-            </div>
-            <div class="detail-section">
-              <h4>Technical Details</h4>
-              <p>Flight controller runs iNav with custom mixer for wing configuration. GPS module provides position data for autonomous flight modes. Crossfire telemetry feeds back battery voltage, RSSI, GPS coordinates, and flight mode to ground station. OSD configured to display critical flight data on FPV feed.</p>
-            </div>
-          </div>
-        </div>
+    <div class="pcard reveal d2">
+      <div class="card-bar blue"></div>
+      <div class="card-top"><div class="card-ico">✈️</div><span class="card-tag tag-fpv">FPV / iNav</span></div>
+      <div class="card-body">
+        <div class="card-title">AtomRC Dolphin Build</div>
+        <div class="card-desc">Long-range fixed-wing FPV platform optimized for endurance, reliability, and field repairability. Full iNav stack with Crossfire, DJI video, custom LED nav lighting, and prop/battery tuning for maximum flight time.</div>
+        <div class="chips"><span class="chip">iNav</span><span class="chip">Crossfire</span><span class="chip">DJI Vista</span><span class="chip">WS2812</span><span class="chip">WTFOS</span></div>
       </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Frame</span><span class="exp-val">AtomRC Dolphin — EPP foam fixed-wing with modular component bay</span></div>
+        <div class="exp-row"><span class="exp-lbl">Stack</span><span class="exp-val">iNav flight controller, TBS Crossfire for link, DJI Vista for HD video feed</span></div>
+        <div class="exp-row"><span class="exp-lbl">Mods</span><span class="exp-val">Custom WS2812 nav lighting, WTFOS rooted DJI system, optimized prop/battery combo</span></div>
+        <div class="exp-row"><span class="exp-lbl">Focus</span><span class="exp-val">Weight budgeting, launch performance, return-to-home reliability, and field diagnostics</span></div>
+      </div></div>
+    </div>
 
-      <!-- Project 2: ESP32 Ground Station -->
-      <div class="project-card" onclick="toggleCard(this)">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">ESP32 Crossfire Ground Station</h3>
-            <p class="card-summary">Real-time telemetry receiver and display for Crossfire RC systems</p>
-          </div>
-          <div class="expand-icon">+</div>
-        </div>
-        <div class="card-tags">
-          <span class="tag">ESP32</span>
-          <span class="tag">Crossfire</span>
-          <span class="tag">CRSF Protocol</span>
-          <span class="tag">OLED</span>
-        </div>
-        <div class="card-details">
-          <div class="card-details-content">
-            <div class="detail-section">
-              <h4>Overview</h4>
-              <p>Custom-built ground station using ESP32 to receive and decode Crossfire (CRSF) telemetry data. Displays real-time aircraft position, battery status, RSSI, and flight metrics on an OLED screen. Acts as a backup telemetry monitor during long-range flights.</p>
-            </div>
-            <div class="detail-section">
-              <h4>Key Features</h4>
-              <ul>
-                <li>Decodes CRSF telemetry packets (GPS, voltage, current, RSSI)</li>
-                <li>128x64 OLED display with multi-screen layout</li>
-                <li>Data logging to SD card for post-flight analysis</li>
-                <li>Low-voltage buzzer alerts</li>
-                <li>Powered by 18650 battery with USB-C charging</li>
-              </ul>
-            </div>
-            <div class="detail-section">
-              <h4>Technical Details</h4>
-              <p>ESP32 UART receives CRSF protocol frames at 420kbaud. Custom parser extracts telemetry fields and updates display at 10Hz. Data is timestamped and written to CSV on SD card. Low-power mode extends battery life to 8+ hours of continuous monitoring.</p>
-            </div>
-          </div>
-        </div>
+    <div class="pcard reveal d2">
+      <div class="card-bar"></div>
+      <div class="card-top"><div class="card-ico">💡</div><span class="card-tag tag-led">Electronics</span></div>
+      <div class="card-body">
+        <div class="card-title">WS2812 LED Animation System</div>
+        <div class="card-desc">ESP32-based custom LED controller with physically remapped WS2812 strips, mirrored animation logic, and RC radio switch integration. Includes scanner, fire, strobe, sparkle, and breathing effects.</div>
+        <div class="chips"><span class="chip">FastLED</span><span class="chip">ESP32-S3</span><span class="chip">XIAO C3</span><span class="chip">PWM Bridge</span><span class="chip">WLED API</span></div>
       </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Hardware</span><span class="exp-val">ESP32-S3 running WLED; secondary XIAO ESP32-C3 as PWM-to-API bridge for RC switch control</span></div>
+        <div class="exp-row"><span class="exp-lbl">Remapping</span><span class="exp-val">Custom physical-to-logical index map for mirrored animations across asymmetric LED strips</span></div>
+        <div class="exp-row"><span class="exp-lbl">Debug</span><span class="exp-val">Diagnosed and resolved 5V-to-3.3V signal level mismatch using logic level shifter</span></div>
+        <div class="exp-row"><span class="exp-lbl">Integration</span><span class="exp-val">Mounted on AtomRC Dolphin; RC transmitter switch controls animation mode in-flight</span></div>
+      </div></div>
+    </div>
 
-      <!-- Project 3: WS2812 LED Controller -->
-      <div class="project-card" onclick="toggleCard(this)">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">WS2812 LED Animation System</h3>
-            <p class="card-summary">Custom addressable LED controller with animation engine and wireless control</p>
-          </div>
-          <div class="expand-icon">+</div>
-        </div>
-        <div class="card-tags">
-          <span class="tag">ESP32</span>
-          <span class="tag">WS2812</span>
-          <span class="tag">FastLED</span>
-          <span class="tag">WiFi</span>
-        </div>
-        <div class="card-details">
-          <div class="card-details-content">
-            <div class="detail-section">
-              <h4>Overview</h4>
-              <p>ESP32-based controller for WS2812B addressable LED strips. Features a library of custom animations, web-based control interface, and integration with Home Assistant. Drives up to 500 LEDs with smooth color transitions and effects.</p>
-            </div>
-            <div class="detail-section">
-              <h4>Key Features</h4>
-              <ul>
-                <li>FastLED library for hardware-accelerated rendering</li>
-                <li>20+ custom animation patterns (fire, rainbow, chase, breathe, etc.)</li>
-                <li>Web UI for real-time control and pattern selection</li>
-                <li>MQTT integration with Home Assistant</li>
-                <li>Audio-reactive mode using analog microphone input</li>
-              </ul>
-            </div>
-            <div class="detail-section">
-              <h4>Technical Details</h4>
-              <p>ESP32 drives LED data at 800kHz using RMT peripheral for precise timing. Animation engine supports layered effects with alpha blending. Web server runs on port 80 with responsive UI. MQTT publishes state changes and receives commands from home automation system.</p>
-            </div>
-          </div>
-        </div>
+    <div class="pcard reveal d3">
+      <div class="card-bar purple"></div>
+      <div class="card-top"><div class="card-ico">🖨️</div><span class="card-tag tag-3dp">3D Printing</span></div>
+      <div class="card-body">
+        <div class="card-title">Ender 3 V2 / Klipper Build</div>
+        <div class="card-desc">Heavily modded Ender 3 running Klipper on a BTT Pad 7. Sprite Pro direct drive, dual Z with splitter, SKR Mini E3 V3, CR Touch bed leveling, PEI surfaces, input shaping, and pressure advance tuning.</div>
+        <div class="chips"><span class="chip">Klipper</span><span class="chip">Mainsail</span><span class="chip">OrcaSlicer</span><span class="chip">ADXL345</span><span class="chip">BTT Pad 7</span></div>
       </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Mods</span><span class="exp-val">Sprite Pro direct drive, dual Z leadscrew, SKR Mini E3 V3, CR Touch, PEI spring steel</span></div>
+        <div class="exp-row"><span class="exp-lbl">Firmware</span><span class="exp-val">Klipper with Moonraker API; Mainsail UI; BTT Pad 7 touchscreen with KlipperScreen</span></div>
+        <div class="exp-row"><span class="exp-lbl">Tuning</span><span class="exp-val">Input shaping (ADXL345), pressure advance, bed mesh compensation, PID calibration</span></div>
+        <div class="exp-row"><span class="exp-lbl">Extras</span><span class="exp-val">Audio alerts via shell macros, Noctua PWM fans, Obico remote monitoring, PETG/TPU profiles</span></div>
+      </div></div>
+    </div>
 
-      <!-- Project 4: Ender 3 V2 Klipper -->
-      <div class="project-card" onclick="toggleCard(this)">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">Ender 3 V2 Klipper Upgrade</h3>
-            <p class="card-summary">Complete conversion to Klipper firmware with custom macros and tuning</p>
-          </div>
-          <div class="expand-icon">+</div>
-        </div>
-        <div class="card-tags">
-          <span class="tag">Klipper</span>
-          <span class="tag">Raspberry Pi</span>
-          <span class="tag">3D Printing</span>
-          <span class="tag">Macros</span>
-        </div>
-        <div class="card-details">
-          <div class="card-details-content">
-            <div class="detail-section">
-              <h4>Overview</h4>
-              <p>Ender 3 V2 upgraded from stock Marlin firmware to Klipper running on Raspberry Pi 4. Significant improvements in print quality, speed, and features. Input shaping eliminates ringing artifacts. Pressure advance improves corner quality.</p>
-            </div>
-            <div class="detail-section">
-              <h4>Key Features</h4>
-              <ul>
-                <li>Input shaping tuned with accelerometer (ringing eliminated)</li>
-                <li>Pressure advance calibrated per filament type</li>
-                <li>Custom start/end G-code macros</li>
-                <li>Automated bed mesh leveling before each print</li>
-                <li>Mainsail web interface for remote monitoring</li>
-              </ul>
-            </div>
-            <div class="detail-section">
-              <h4>Technical Details</h4>
-              <p>Klipper offloads motion planning to Raspberry Pi, allowing 32-bit processing for smoother motion. ADXL345 accelerometer measured resonances at 42Hz (X) and 38Hz (Y). Input shaping applied with MZV algorithm. Pressure advance set to 0.055 for PLA, 0.065 for PETG. Macro library handles filament loading, purging, and calibration routines.</p>
-            </div>
-          </div>
-        </div>
+    <div class="pcard reveal d3">
+      <div class="card-bar teal"></div>
+      <div class="card-top"><div class="card-ico">🖧</div><span class="card-tag tag-lab">Homelab</span></div>
+      <div class="card-body">
+        <div class="card-title">Self-Hosted Infrastructure</div>
+        <div class="card-desc">Docker-based home server stack with Tailscale VPN mesh for secure remote access. Monitoring, file sync, print farm management, and smart home — all self-hosted, all under my control.</div>
+        <div class="chips"><span class="chip">Docker</span><span class="chip">Portainer</span><span class="chip">Tailscale</span><span class="chip">Home Assistant</span><span class="chip">Nextcloud</span></div>
       </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Host</span><span class="exp-val">Windows desktop running Docker Desktop, managed via Portainer</span></div>
+        <div class="exp-row"><span class="exp-lbl">Services</span><span class="exp-val">Home Assistant, Nextcloud, Uptime Kuma, Obico (3D print monitoring), Moonraker</span></div>
+        <div class="exp-row"><span class="exp-lbl">Network</span><span class="exp-val">Tailscale VPN mesh for zero-config remote access across all devices</span></div>
+        <div class="exp-row"><span class="exp-lbl">Extras</span><span class="exp-val">Input Leap for cross-machine KVM; Meshtastic MQTT broker integration</span></div>
+      </div></div>
+    </div>
 
-      <!-- Project 5: Home Assistant Setup -->
-      <div class="project-card" onclick="toggleCard(this)">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">Home Assistant & Monitoring</h3>
-            <p class="card-summary">Self-hosted home automation with custom integrations and monitoring dashboards</p>
-          </div>
-          <div class="expand-icon">+</div>
-        </div>
-        <div class="card-tags">
-          <span class="tag">Home Assistant</span>
-          <span class="tag">Docker</span>
-          <span class="tag">MQTT</span>
-          <span class="tag">Grafana</span>
-        </div>
-        <div class="card-details">
-          <div class="card-details-content">
-            <div class="detail-section">
-              <h4>Overview</h4>
-              <p>Home Assistant running in Docker on dedicated server. Integrates smart home devices, custom ESP32 sensors, and monitoring tools. Grafana dashboards track system metrics, network performance, and environmental data.</p>
-            </div>
-            <div class="detail-section">
-              <h4>Key Features</h4>
-              <ul>
-                <li>MQTT broker for ESP32 device communication</li>
-                <li>Custom sensors: temperature, humidity, power monitoring</li>
-                <li>Automated lighting scenes and schedules</li>
-                <li>Network monitoring with Grafana + InfluxDB</li>
-                <li>Backup automation with daily snapshots</li>
-              </ul>
-            </div>
-            <div class="detail-section">
-              <h4>Technical Details</h4>
-              <p>Home Assistant Core running in Docker with Mosquitto MQTT broker. ESP32 devices publish sensor data to MQTT topics. Node-RED handles complex automation flows. Grafana visualizes time-series data from InfluxDB. All services reverse-proxied through Nginx with SSL.</p>
-            </div>
-          </div>
-        </div>
+    <div class="pcard reveal d4">
+      <div class="card-bar green"></div>
+      <div class="card-top"><div class="card-ico">📻</div><span class="card-tag tag-esp">LoRa / Mesh</span></div>
+      <div class="card-body">
+        <div class="card-title">Tennessee Meshtastic Network</div>
+        <div class="card-desc">Co-founded a 200+ member LoRa mesh radio network covering Nashville metro. Built a Python weather alert bot using the NWS API and MQTT to push severe weather alerts to the mesh in real time.</div>
+        <div class="chips"><span class="chip">Meshtastic</span><span class="chip">LoRa</span><span class="chip">MQTT</span><span class="chip">Python</span><span class="chip">NWS API</span></div>
       </div>
+      <button class="card-btn" aria-expanded="false" onclick="toggleCard(this)">Details <span class="arr"></span></button>
+      <div class="card-expand"><div class="expand-in">
+        <div class="exp-row"><span class="exp-lbl">Scale</span><span class="exp-val">200+ members, Nashville metro coverage, active Meshtastic LoRa node network</span></div>
+        <div class="exp-row"><span class="exp-lbl">Bot</span><span class="exp-val">Python script polls NWS API; formats alerts into &lt;200 byte LoRa-optimized messages; broadcasts via MQTT</span></div>
+        <div class="exp-row"><span class="exp-lbl">Role</span><span class="exp-val">Co-founder, node operator, software contributor, community organizer</span></div>
+      </div></div>
+    </div>
 
+  </div>
+</section>
+
+<section id="sphere-sec">
+  <div class="sph-lay">
+    <div class="sph-txt reveal">
+      <div class="section-label">Explore</div>
+      <h2>Everything in orbit.</h2>
+      <p>Every project connects to something else. The ground station needs the aircraft. The aircraft needs the LED system. The LED system needs the 3D-printed mount. It's all one big interconnected build.</p>
+      <p>This isn't a list of hobbies. It's a system of interests that push each other forward.</p>
+      <p class="sph-hint">↻ Drag to spin · Hold tile to explore</p>
+    </div>
+    <div class="sph-wrap reveal d2" id="sph-wrap">
+      <canvas id="sph-canvas"></canvas>
+      <div id="sph-labels"></div>
     </div>
   </div>
 </section>
 
-<!-- ===== TECH STACK ===== -->
-<section id="tech">
-  <div class="container">
-    <div class="section-header">
-      <h2>Tech & Tools</h2>
-      <p class="subtitle">The hardware, software, and systems that make it all work.</p>
-    </div>
-    <div class="tech-grid">
-      <div class="tech-item"><span class="category">Flight</span>iNav</div>
-      <div class="tech-item"><span class="category">Flight</span>Betaflight</div>
-      <div class="tech-item"><span class="category">RC</span>Crossfire</div>
-      <div class="tech-item"><span class="category">RC</span>ELRS</div>
-      <div class="tech-item"><span class="category">MCU</span>ESP32</div>
-      <div class="tech-item"><span class="category">MCU</span>Arduino</div>
-      <div class="tech-item"><span class="category">LEDs</span>WS2812B</div>
-      <div class="tech-item"><span class="category">LEDs</span>FastLED</div>
-      <div class="tech-item"><span class="category">Printer</span>Klipper</div>
-      <div class="tech-item"><span class="category">Printer</span>Ender 3 V2</div>
-      <div class="tech-item"><span class="category">CAD</span>Fusion 360</div>
-      <div class="tech-item"><span class="category">CAD</span>OpenSCAD</div>
-      <div class="tech-item"><span class="category">Home</span>Home Assistant</div>
-      <div class="tech-item"><span class="category">Home</span>Docker</div>
-      <div class="tech-item"><span class="category">Network</span>MQTT</div>
-      <div class="tech-item"><span class="category">Monitor</span>Grafana</div>
+<section id="skills">
+  <div class="sk-in">
+    <div class="section-label reveal">Skills &amp; Tools</div>
+    <h2 class="reveal d1">What I actually work with.</h2>
+    <div class="sk-grid">
+      <div class="reveal d1">
+        <div class="sk-group-lbl">Hardware</div>
+        <div class="sk-list">
+          <div class="sk-item">Component-level diagnostics</div>
+          <div class="sk-item">Electronics assembly &amp; wiring</div>
+          <div class="sk-item">BIOS/UEFI flashing (CH341A)</div>
+          <div class="sk-item">PC troubleshooting</div>
+          <div class="sk-item">Soldering &amp; rework</div>
+          <div class="sk-item">Logic level interfacing</div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="sk-group-lbl">Embedded &amp; FPV</div>
+        <div class="sk-list">
+          <div class="sk-item">ESP32 / Arduino dev</div>
+          <div class="sk-item">FastLED &amp; WLED</div>
+          <div class="sk-item">CRSF / ELRS protocol</div>
+          <div class="sk-item">iNav flight stack</div>
+          <div class="sk-item">Betaflight</div>
+          <div class="sk-item">DJI / WTFOS ecosystem</div>
+        </div>
+      </div>
+      <div class="reveal d3">
+        <div class="sk-group-lbl">3D Printing</div>
+        <div class="sk-list">
+          <div class="sk-item">Klipper firmware</div>
+          <div class="sk-item">Mainsail / Moonraker</div>
+          <div class="sk-item">OrcaSlicer profiling</div>
+          <div class="sk-item">Pressure advance tuning</div>
+          <div class="sk-item">Input shaping (ADXL345)</div>
+          <div class="sk-item">Printer modding &amp; repair</div>
+        </div>
+      </div>
+      <div class="reveal d4">
+        <div class="sk-group-lbl">Infrastructure</div>
+        <div class="sk-list">
+          <div class="sk-item">Docker &amp; Portainer</div>
+          <div class="sk-item">Tailscale VPN mesh</div>
+          <div class="sk-item">Home Assistant</div>
+          <div class="sk-item">Nextcloud / self-hosting</div>
+          <div class="sk-item">MQTT / Meshtastic</div>
+          <div class="sk-item">Python scripting</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-credit">Built with curiosity. Powered by too much coffee.</div>
-      <div class="footer-links">
-        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
-        <a href="mailto:hello@example.com">Email</a>
+<section id="interests">
+  <div class="int-in">
+    <div class="section-label reveal">Interests</div>
+    <h2 class="reveal d1">What keeps me up at night.</h2>
+    <div class="int-grid">
+      <div class="int-card reveal d1"><div class="int-ico">✈️</div><div class="int-name">FPV Aircraft</div><div class="int-sub">Wings &amp; Quads</div></div>
+      <div class="int-card reveal d2"><div class="int-ico">📡</div><div class="int-name">Radio Systems</div><div class="int-sub">LoRa &amp; RC Links</div></div>
+      <div class="int-card reveal d2"><div class="int-ico">🖨️</div><div class="int-name">3D Printing</div><div class="int-sub">Klipper &amp; Beyond</div></div>
+      <div class="int-card reveal d3"><div class="int-ico">⚡</div><div class="int-name">Electronics</div><div class="int-sub">ESP32 &amp; Embedded</div></div>
+      <div class="int-card reveal d3"><div class="int-ico">🖧</div><div class="int-name">Homelab</div><div class="int-sub">Self-Hosted Stack</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="con-in">
+    <div class="con-left reveal">
+      <div class="section-label">Contact</div>
+      <h2>Let's talk shop.</h2>
+      <p>I'm always interested in connecting with people who are building things — whether that's discussing a project, exploring a job opportunity, or just swapping notes on gear. No pitches, no spam.</p>
+      <div class="con-links">
+        <a href="https://github.com/AtareFpv" target="_blank" class="con-link"><span>💻</span> github.com/AtareFpv</a>
+        <a href="https://www.youtube.com/@AtareFpv" target="_blank" class="con-link"><span>▶️</span> youtube.com/@AtareFpv</a>
+        <a href="https://poly.cam/@AtareFpv" target="_blank" class="con-link"><span>🌐</span> poly.cam/@AtareFpv</a>
       </div>
     </div>
+    <div class="con-form reveal d2">
+      <div class="fg"><label>Name</label><input type="text" placeholder="Your name"></div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+      <div class="fg"><label>Message</label><textarea rows="5" placeholder="What are you building?"></textarea></div>
+      <button class="btn btn-p" style="align-self:flex-start">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-txt">© 2025 Jonathan W. Smith &nbsp;·&nbsp; Built by hand, not by template.</div>
+  <div class="ft-links">
+    <a href="#hero">Top</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
   </div>
 </footer>
 
+<div class="status-bar">
+  <div class="si"><div class="sdot"></div> All systems nominal</div>
+  <div class="si"><div class="sdot amber"></div> Ender 3 · Printing</div>
+  <div class="si">📡 TMN · 200+ nodes online</div>
+  <div class="si si-r" id="clock-si">⏱ --:--:--</div>
+</div>
+
 <script>
-// Toggle project card expansion
-function toggleCard(card) {
-  const isExpanded = card.classList.contains('expanded');
+/* CURSOR */
+const cdot=document.getElementById('cdot'),cring=document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cdot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.pcard,.int-card,.con-link,.sph-tile').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cring.classList.add('hovered'));
+  el.addEventListener('mouseleave',()=>cring.classList.remove('hovered'));
+});
 
-  // Close all other cards
-  document.querySelectorAll('.project-card').forEach(c => {
-    if (c !== card) c.classList.remove('expanded');
+/* NAV */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+
+/* TYPEWRITER — your phrases kept */
+const phrases=[
+  'Hands-on builder & problem solver.',
+  'FPV pilot. Fixed-wing & quads.',
+  'ESP32 tinkerer.',
+  '3D printing & Klipper obsessive.',
+  'Self-hosting Network / Homelab.',
+  'Founding member of Nashville, Tennessee Meshtastic Network.',
+  'Transitioning into tech. One build at a time.',
+];
+let pi=0,ci=0,del=false;
+const tw=document.getElementById('typewriter');
+function typeStep(){
+  const p=phrases[pi];
+  if(!del){tw.textContent=p.slice(0,++ci);if(ci===p.length){del=true;setTimeout(typeStep,2200);return;}setTimeout(typeStep,52);}
+  else{tw.textContent=p.slice(0,--ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;setTimeout(typeStep,400);return;}setTimeout(typeStep,28);}
+}
+setTimeout(typeStep,1400);
+
+/* PARTICLES */
+const canvas=document.getElementById('hero-canvas'),ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;pts=[];const N=Math.floor(W*H/14000);for(let i=0;i<N;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.18,r:Math.random()*1.1+.4,o:Math.random()*.35+.15});}
+function draw(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(233,160,32,${p.o})`;ctx.fill();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<100){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(233,160,32,${.07*(1-d/100)})`;ctx.stroke();}}));requestAnimationFrame(draw);}
+window.addEventListener('resize',resize);resize();draw();
+
+/* CARD TOGGLE */
+function toggleCard(btn){const exp=btn.nextElementSibling;const open=exp.classList.toggle('open');btn.setAttribute('aria-expanded',open);}
+
+/* SCROLL REVEALS */
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* ── SPHERE: 2D projection, no CSS preserve-3d ── */
+const SPH_R=155, SPH_PERSP=750;
+const sphWrap=document.getElementById('sph-wrap');
+const sphCanvas=document.getElementById('sph-canvas');
+const sphCtx=sphCanvas.getContext('2d');
+const sphLabels=document.getElementById('sph-labels');
+let sphW,sphH,sphCX,sphCY;
+
+function sphResize(){
+  sphW=sphWrap.offsetWidth||480; sphH=sphWrap.offsetHeight||480;
+  sphCanvas.width=sphW; sphCanvas.height=sphH;
+  sphCX=sphW/2; sphCY=sphH/2;
+}
+sphResize();
+window.addEventListener('resize',sphResize,{passive:true});
+
+const TILE_INFO={
+  'AtareFpv':         {desc:'Builder, tinkerer, and FPV pilot based in Nashville, TN. Everything on this sphere connects back to flying something.',tag:'Identity'},
+  'FPV Aircraft':     {desc:'Fixed-wing and quad FPV platforms — long-range endurance, reliable telemetry, and field repairability.',tag:'FPV / RC'},
+  'AtomRC Dolphin':   {desc:'Primary long-range fixed-wing build. EPP foam running iNav with TBS Crossfire and DJI Vista video. Custom LED nav lighting across multiple airframe rebuilds.',tag:'FPV / RC'},
+  'iNav':             {desc:'GPS-based flight controller firmware for fixed-wing. Autonomous navigation, return-to-home, and CRSF telemetry output.',tag:'Firmware'},
+  'Crossfire / CRSF': {desc:'TBS Crossfire long-range RC link at 900MHz. Single UART connection carries both control and full bidirectional telemetry.',tag:'RC Link'},
+  'DJI Video':        {desc:'DJI Vista digital FPV system rooted with WTFOS — custom OSD fonts, DVR access, and extended configuration.',tag:'FPV Video'},
+  'Betaflight':       {desc:'Flight controller firmware for freestyle and racing quads. PID tuning, motor config, rates, and blackbox logging.',tag:'Firmware'},
+  'ESP32 Dev':        {desc:'Microcontroller development on ESP32. UART, WiFi, BLE, display drivers, and custom firmware written from scratch.',tag:'Embedded'},
+  'WLED / FastLED':   {desc:'LED animation firmware stack. WLED on ESP32-S3 for effects; FastLED for fine-grained animation and custom physical-to-logical mapping.',tag:'Electronics'},
+  'WS2812 LEDs':      {desc:'Addressable RGB LEDs for aircraft nav lighting. Custom strip remapping enables mirrored animations across asymmetric layouts.',tag:'Electronics'},
+  'UART / Serial':    {desc:'Core serial protocol interfacing ESP32 with RC receivers, flight controllers, and telemetry decoders.',tag:'Protocol'},
+  'Firmware Dev':     {desc:'Writing embedded firmware from scratch — CRSF decoder, T-Display-S3 UI, PWM-to-API bridge, custom display drivers.',tag:'Dev'},
+  'Soldering':        {desc:'Component-level electronics — SMD rework, flight stack wiring, sensor integration, connector crimping, PCB assembly.',tag:'Hardware'},
+  'Embedded C':       {desc:'Low-level C/C++ for microcontrollers. Direct hardware access, protocol implementation, and real-time control loops.',tag:'Dev'},
+  'PWM Bridge':       {desc:'XIAO ESP32-C3 reading RC transmitter PWM signals and translating them to WLED HTTP API calls — LED animation control mid-flight.',tag:'Embedded'},
+  'Klipper':          {desc:'Advanced 3D printer firmware on Ender 3 V2. Input shaping, pressure advance, macro scripting, and real-time config via Moonraker API.',tag:'3D Printing'},
+  'OrcaSlicer':       {desc:'Primary slicer. Manually tuned profiles for PLA, PETG, and TPU — including custom YOYI TPU profile via direct JSON editing.',tag:'3D Printing'},
+  '3D Printing':      {desc:'Functional part fabrication on a heavily modded Ender 3 V2. Mounts, enclosures, tools, and components for FPV and electronics.',tag:'3D Printing'},
+  'Bed Mesh':         {desc:'Automatic leveling via CR Touch probe. Klipper generates a compensation mesh and adjusts Z height dynamically during the print.',tag:'Calibration'},
+  'Pressure Advance': {desc:'Klipper feature compensating for filament pressure lag. Tuned to ~0.02 for direct drive — significantly sharper corners and cleaner overhangs.',tag:'Calibration'},
+  'Input Shaping':    {desc:'Resonance compensation using ADXL345 accelerometer data. Eliminates ringing artifacts and enables faster print speeds.',tag:'Calibration'},
+  'Direct Drive':     {desc:'Sprite Pro direct drive extruder upgrade. Short filament path improves retraction precision — critical for flexible materials like TPU.',tag:'Hardware Mod'},
+  'Docker':           {desc:'All homelab services run in isolated Docker containers. Clean separation, easy updates, and fast recovery.',tag:'Infrastructure'},
+  'Portainer':        {desc:'Web UI for Docker management. Container lifecycle, log viewing, stack deployment, and resource monitoring from a browser.',tag:'Infrastructure'},
+  'Tailscale':        {desc:'Zero-config VPN mesh built on WireGuard. Every device on a private encrypted network accessible from anywhere.',tag:'Networking'},
+  'Home Assistant':   {desc:'Open-source home automation running locally in Docker. Smart device control, automations, and integrations — no cloud required.',tag:'Homelab'},
+  'Nextcloud':        {desc:'Self-hosted file sync and sharing. Private cloud storage accessible via Tailscale from any device, anywhere.',tag:'Homelab'},
+  'Uptime Kuma':      {desc:'Self-hosted monitoring dashboard tracking uptime and response times for every homelab service, with push alerts.',tag:'Homelab'},
+  'Moonraker':        {desc:'REST API layer for Klipper. Connects printer firmware to Mainsail, OrcaSlicer, Obico, and other tools over the network.',tag:'3D Printing'},
+  'Obico':            {desc:'AI-powered 3D print monitoring with failure detection. Streams printer camera and alerts on spaghetti or detachment.',tag:'Homelab'},
+  'Linux':            {desc:'Primary OS for servers and embedded systems. CLI, systemd, networking, package management, and shell scripting.',tag:'OS'},
+  'Meshtastic':       {desc:'Open-source LoRa mesh radio firmware. Co-founded the Tennessee Meshtastic Network — 200+ nodes, Nashville metro, live weather alert bot.',tag:'Mesh Radio'},
+  'LoRa Radio':       {desc:'Long Range radio at 915MHz ISM band. Low power, multi-kilometer range — ideal for off-grid and emergency mesh communications.',tag:'Mesh Radio'},
+  'MQTT':             {desc:'Lightweight pub/sub protocol bridging Meshtastic node data to Home Assistant dashboards and the NWS weather alert pipeline.',tag:'Protocol'},
+  'Python':           {desc:'Scripting language powering the NWS weather alert bot, Meshtastic automation tools, and data processing utilities.',tag:'Dev'},
+  'NWS API':          {desc:'NOAA National Weather Service API. Python bot polls for alerts, formats under 200 bytes for LoRa, and broadcasts to the mesh.',tag:'Dev'},
+  'CompTIA A+':       {desc:'Actively pursuing CompTIA A+ alongside hands-on enterprise hardware diagnostics on NVIDIA GB200/B200 AI server systems at Quanta.',tag:'Career'},
+};
+
+/* Ring definitions — lat/lon grid */
+const RING_DEFS=[
+  {phi:0,              labels:['AtareFpv']},
+  {phi:Math.PI/6,      labels:['FPV Aircraft','AtomRC Dolphin','iNav','Crossfire / CRSF','DJI Video','Betaflight']},
+  {phi:Math.PI/3,      labels:['ESP32 Dev','WLED / FastLED','WS2812 LEDs','UART / Serial','Firmware Dev','Soldering','Embedded C','PWM Bridge']},
+  {phi:Math.PI/2,      labels:['Klipper','OrcaSlicer','3D Printing','Bed Mesh','Pressure Advance','Input Shaping','Direct Drive','Docker','Portainer','Tailscale']},
+  {phi:Math.PI*2/3,    labels:['Home Assistant','Nextcloud','Uptime Kuma','Moonraker','Obico','Linux']},
+  {phi:Math.PI*5/6,    labels:['Meshtastic','LoRa Radio','MQTT','Python','NWS API']},
+  {phi:Math.PI,        labels:['CompTIA A+']},
+];
+
+/* Build nodes and edge lists */
+const sphNodes=[], sphEdges=[];
+RING_DEFS.forEach(({phi,labels},ri)=>{
+  const count=labels.length;
+  const rStart=sphNodes.length;
+  labels.forEach((txt,j)=>{
+    const tOff=(ri%2===1&&count>1)?(Math.PI/count):0;
+    const theta=count===1?0:(j/count)*Math.PI*2+tOff;
+    const ox=SPH_R*Math.sin(phi)*Math.cos(theta);
+    const oy=-SPH_R*Math.cos(phi);
+    const oz=SPH_R*Math.sin(phi)*Math.sin(theta);
+    /* Tile div */
+    const div=document.createElement('div');
+    div.className='sph-tile';
+    div.textContent=txt;
+    div.addEventListener('mousedown',e=>{
+      e.stopPropagation();e.preventDefault();
+      dragging=false;
+      const {sx,sy}=sphProject(ox,oy,oz);
+      const wr=sphWrap.getBoundingClientRect();
+      showSphPopup(txt, wr.left+sx, wr.top+sy);
+    });
+    sphLabels.appendChild(div);
+    sphNodes.push({ox,oy,oz,phi,theta,div,txt});
   });
-
-  // Toggle current card
-  card.classList.toggle('expanded');
-
-  // Scroll to card if expanding
-  if (!isExpanded) {
-    setTimeout(() => {
-      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+  /* Latitude ring edges */
+  if(count>1) for(let j=0;j<count;j++) sphEdges.push([rStart+j,rStart+(j+1)%count]);
+  /* Meridian edges to previous ring */
+  if(ri>0){
+    const c1=RING_DEFS[ri-1].labels.length;
+    const r1=rStart-c1;
+    const used=new Set();
+    const addE=(a,b)=>{const k=Math.min(a,b)+','+Math.max(a,b);if(!used.has(k)){used.add(k);sphEdges.push([a,b]);}};
+    if(c1===1){for(let j=0;j<count;j++)addE(r1,rStart+j);}
+    else if(count===1){for(let j=0;j<c1;j++)addE(r1+j,rStart);}
+    else{
+      for(let j=0;j<count;j++){
+        const ta=sphNodes[rStart+j].theta;
+        let best=0,bd=Infinity;
+        for(let k=0;k<c1;k++){let d=Math.abs(ta-sphNodes[r1+k].theta);if(d>Math.PI)d=2*Math.PI-d;if(d<bd){bd=d;best=k;}}
+        addE(rStart+j,r1+best);
+      }
+      for(let k=0;k<c1;k++){
+        const ta=sphNodes[r1+k].theta;
+        let best=0,bd=Infinity;
+        for(let j=0;j<count;j++){let d=Math.abs(ta-sphNodes[rStart+j].theta);if(d>Math.PI)d=2*Math.PI-d;if(d<bd){bd=d;best=j;}}
+        addE(r1+k,rStart+best);
+      }
+    }
   }
+});
+
+/* Rotation state */
+let sphRotX=0.22,sphRotY=0,sphVX=0,sphVY=0;
+let dragging=false,lastMx=0,lastMy=0;
+let hovering=false,sphLastT=null,sphElapsed=0;
+const SPH_AUTO=0.00055;
+
+function sphRotPt(ox,oy,oz){
+  const cy=Math.cos(sphRotY),sy=Math.sin(sphRotY);
+  const x1=ox*cy+oz*sy,z1=-ox*sy+oz*cy;
+  const cx=Math.cos(sphRotX),sx=Math.sin(sphRotX);
+  return{x:x1,y:oy*cx-z1*sx,z:oy*sx+z1*cx};
 }
 
-// Smooth scroll for nav links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function sphProject(ox,oy,oz){
+  const{x,y,z}=sphRotPt(ox,oy,oz);
+  const s=SPH_PERSP/(SPH_PERSP-z);
+  return{sx:sphCX+x*s,sy:sphCY+y*s,z,s};
+}
+
+function sphFrame(ts){
+  if(!sphLastT)sphLastT=ts;
+  const dt=Math.min(ts-sphLastT,50);
+  sphLastT=ts;sphElapsed+=dt;
+  if(!dragging){
+    if(!hovering){
+      sphRotY+=SPH_AUTO*dt*(1+0.18*Math.sin(sphElapsed*0.00027));
+      sphRotX=0.22+0.11*Math.sin(sphElapsed*0.00041);
     }
-  });
-});
-
-// Close expanded cards when clicking outside
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.project-card')) {
-    document.querySelectorAll('.project-card.expanded').forEach(card => {
-      card.classList.remove('expanded');
-    });
+    sphVX*=0.96;sphVY*=0.96;
+    sphRotX+=sphVX;sphRotY+=sphVY;
+    sphRotX=Math.max(-Math.PI/2.2,Math.min(Math.PI/2.2,sphRotX));
   }
-});
-</script>
 
+  /* Project all nodes */
+  const proj=sphNodes.map((n,i)=>({i,...sphProject(n.ox,n.oy,n.oz),n}));
+
+  /* Draw mesh on canvas */
+  sphCtx.clearRect(0,0,sphW,sphH);
+  sphEdges.forEach(([a,b])=>{
+    const pa=proj[a],pb=proj[b];
+    const t=((pa.z+pb.z)/2+SPH_R)/(2*SPH_R);
+    sphCtx.beginPath();
+    sphCtx.moveTo(pa.sx,pa.sy);
+    sphCtx.lineTo(pb.sx,pb.sy);
+    sphCtx.strokeStyle=`rgba(233,160,32,${(0.06+0.16*t).toFixed(2)})`;
+    sphCtx.lineWidth=0.65;
+    sphCtx.stroke();
+  });
+
+  /* Position tile divs */
+  proj.forEach(({sx,sy,z,s,n})=>{
+    const depth=(z+SPH_R)/(2*SPH_R); // 0=back, 1=front
+    /* Tangent rotation — makes tiles appear to lie on sphere surface */
+    const{x:tx,y:ty}=sphRotPt(
+      -Math.sin(n.theta)*Math.sin(n.phi),
+      0,
+      Math.cos(n.theta)*Math.sin(n.phi)
+    );
+    /* Normalize so text never renders upside-down */
+    let angle=Math.atan2(ty,tx);
+    if(angle>Math.PI/2)angle-=Math.PI;
+    else if(angle<-Math.PI/2)angle+=Math.PI;
+    const fs=Math.round(7.5+3.5*depth);
+    const op=depth<0.06?0:(0.28+0.72*depth);
+    n.div.style.left=sx+'px';
+    n.div.style.top=sy+'px';
+    n.div.style.transform=`translate(-50%,-50%) rotate(${angle.toFixed(3)}rad)`;
+    n.div.style.fontSize=fs+'px';
+    n.div.style.opacity=op.toFixed(2);
+    n.div.style.zIndex=Math.round(depth*100);
+    n.div.style.pointerEvents=depth<0.08?'none':'auto';
+  });
+
+  requestAnimationFrame(sphFrame);
+}
+requestAnimationFrame(sphFrame);
+
+/* Drag handlers */
+sphWrap.addEventListener('mousedown',e=>{dragging=true;lastMx=e.clientX;lastMy=e.clientY;sphVX=0;sphVY=0;e.preventDefault();});
+window.addEventListener('mousemove',e=>{
+  if(!dragging)return;
+  const dx=e.clientX-lastMx,dy=e.clientY-lastMy;
+  sphVY=dx*0.009;sphVX=dy*0.009;
+  sphRotY+=sphVY;sphRotX+=sphVX;
+  sphRotX=Math.max(-Math.PI/2.2,Math.min(Math.PI/2.2,sphRotX));
+  lastMx=e.clientX;lastMy=e.clientY;
+});
+sphWrap.addEventListener('mouseenter',()=>{hovering=true;});
+sphWrap.addEventListener('mouseleave',()=>{hovering=false;sphLastT=null;});
+
+/* ── POPUP: position:fixed, rAF-animated SVG lines ── */
+let _praf=null;
+function showSphPopup(txt,dotVX,dotVY){
+  if(_praf){cancelAnimationFrame(_praf);_praf=null;}
+  const info=TILE_INFO[txt]||{desc:'No description yet.'};
+  const popup=document.getElementById('sph-popup');
+  const svg=document.getElementById('sph-svg');
+  document.getElementById('sph-popup-title').textContent=txt;
+  document.getElementById('sph-popup-desc').textContent=info.desc;
+  document.getElementById('sph-popup-tag').textContent=info.tag||'';
+  const imgWrap=document.getElementById('sph-popup-img');
+  const placeholder=document.getElementById('sph-popup-placeholder');
+  if(info.img){
+    placeholder.textContent='Loading…';placeholder.style.display='flex';
+    const im=new Image();
+    im.onload=()=>{imgWrap.innerHTML=`<img src="${info.img}" alt="${txt}">`;};
+    im.onerror=()=>{placeholder.textContent='';placeholder.style.display='none';};
+    im.src=info.img;
+  } else {placeholder.textContent='';placeholder.style.display='none';}
+  /* Measure */
+  popup.classList.remove('vis');
+  popup.style.visibility='hidden';popup.style.display='block';
+  const PW=popup.offsetWidth,PH=popup.offsetHeight;
+  popup.style.display='';popup.style.visibility='';
+  const VW=window.innerWidth,VH=window.innerHeight;
+  const wrapR=sphWrap.getBoundingClientRect().right;
+  const GAP=52;
+  let lpx=wrapR+GAP,side='right';
+  if(lpx+PW>VW-12){lpx=sphWrap.getBoundingClientRect().left-PW-GAP;side='left';}
+  lpx=Math.max(12,Math.min(lpx,VW-PW-12));
+  let lpy=dotVY-PH/2;
+  lpy=Math.max(12,Math.min(lpy,VH-PH-12));
+  popup.style.left=lpx+'px';popup.style.top=lpy+'px';
+  popup.classList.add('vis');
+  /* Animate SVG */
+  const ex=side==='right'?lpx:lpx+PW;
+  const topY=lpy+16,botY=lpy+PH-16;
+  const l1=Math.hypot(ex-dotVX,topY-dotVY);
+  const l2=Math.hypot(ex-dotVX,botY-dotVY);
+  const perim=2*(PW+PH);
+  svg.innerHTML=`
+    <circle id="pp-ping" cx="${dotVX.toFixed(1)}" cy="${dotVY.toFixed(1)}" r="4" fill="rgba(233,160,32,.2)" stroke="rgba(233,160,32,.9)" stroke-width="1.5"/>
+    <line id="pp-l1" x1="${dotVX.toFixed(1)}" y1="${dotVY.toFixed(1)}" x2="${dotVX.toFixed(1)}" y2="${dotVY.toFixed(1)}" stroke="rgba(233,160,32,.7)" stroke-width="1.3"/>
+    <line id="pp-l2" x1="${dotVX.toFixed(1)}" y1="${dotVY.toFixed(1)}" x2="${dotVX.toFixed(1)}" y2="${dotVY.toFixed(1)}" stroke="rgba(233,160,32,.7)" stroke-width="1.3"/>
+    <rect id="pp-rect" x="${lpx.toFixed(1)}" y="${lpy.toFixed(1)}" width="${PW}" height="${PH}" rx="10" fill="none" stroke="rgba(233,160,32,.6)" stroke-width="1.2" stroke-dasharray="${perim}" stroke-dashoffset="${perim}"/>`;
+  const ping=svg.getElementById('pp-ping');
+  const ln1=svg.getElementById('pp-l1');
+  const ln2=svg.getElementById('pp-l2');
+  const rect=svg.getElementById('pp-rect');
+  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const T0=performance.now();
+  const TP=700,TL=600,TR=750,DL=200,DR=450;
+  function step(now){
+    const e=now-T0;
+    const tp=Math.min(e/TP,1);
+    ping.setAttribute('r',(4+20*ease(tp)).toFixed(1));
+    ping.setAttribute('stroke-width',(1.8*(1-ease(tp))).toFixed(2));
+    ping.setAttribute('stroke',`rgba(233,160,32,${(1-ease(tp)).toFixed(2)})`);
+    const tl=Math.min(Math.max(e-DL,0)/TL,1);
+    const el=ease(tl);
+    ln1.setAttribute('x2',(dotVX+(ex-dotVX)*el).toFixed(1));
+    ln1.setAttribute('y2',(dotVY+(topY-dotVY)*el).toFixed(1));
+    ln2.setAttribute('x2',(dotVX+(ex-dotVX)*el).toFixed(1));
+    ln2.setAttribute('y2',(dotVY+(botY-dotVY)*el).toFixed(1));
+    const tr=Math.min(Math.max(e-DR,0)/TR,1);
+    rect.setAttribute('stroke-dashoffset',(perim*(1-ease(tr))).toFixed(1));
+    if(tp<1||tl<1||tr<1){_praf=requestAnimationFrame(step);}else{_praf=null;}
+  }
+  _praf=requestAnimationFrame(step);
+}
+function hideSphPopup(){
+  if(_praf){cancelAnimationFrame(_praf);_praf=null;}
+  document.getElementById('sph-popup').classList.remove('vis');
+  document.getElementById('sph-svg').innerHTML='';
+}
+window.addEventListener('mouseup',()=>{dragging=false;hideSphPopup();});
+
+/* CLOCK */
+const clk=document.getElementById('clock-si');
+setInterval(()=>{const n=new Date();clk.textContent=`⏱ ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;},1000);
+
+/* HERO TILT */
+document.getElementById('hero').addEventListener('mousemove',e=>{
+  const cx=window.innerWidth/2,cy=window.innerHeight/2;
+  document.querySelector('.hero-content').style.transform=`translate(${(e.clientX-cx)/cx*6}px,${(e.clientY-cy)/cy*4}px)`;
+},{passive:true});
+</script>
+<!-- Popup and SVG overlay — position:fixed, renders above everything -->
+<svg id="sph-svg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9000;overflow:visible;"></svg>
+<div id="sph-popup" class="sph-popup">
+  <div class="sph-popup-img" id="sph-popup-img"><div class="sph-popup-img-placeholder" id="sph-popup-placeholder">Loading…</div></div>
+  <div class="sph-popup-body">
+    <div class="sph-popup-title" id="sph-popup-title"></div>
+    <p class="sph-popup-desc" id="sph-popup-desc"></p>
+    <span class="sph-popup-tag" id="sph-popup-tag"></span>
+  </div>
+</div>
 </body>
 </html>
