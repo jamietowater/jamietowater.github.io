@@ -4,6 +4,7 @@ const H3D_PERSP=900;
 let h3dRotX=0.15,h3dRotY=0.3;
 let h3dDragging=false,h3dLastX=0,h3dLastY=0;
 let h3dVX=0,h3dVY=0;
+let h3dDragGain=0.008;
 
 function h3dRotPt(ox,oy,oz){
   const cy=Math.cos(h3dRotY),sy=Math.sin(h3dRotY);
@@ -24,26 +25,23 @@ function h3dDepthFade(z){
 }
 
 /* ── 3D TEXT: TOWATER ── */
-const h3dTextMeta={
-  T:{x:0,y:0,z:0},
-  o:{x:80,y:0,z:0},
-  w:{x:160,y:0,z:0},
-  a:{x:240,y:0,z:0},
-  t:{x:320,y:0,z:0},
-  e:{x:400,y:0,z:0},
-  r:{x:480,y:0,z:0},
-};
+const H3D_TOWATER='Towater';
 
 function h3dRenderText(){
   const wrap=document.getElementById('hero-3d-towater');
   if(!wrap)return;
   wrap.innerHTML='';
   const cw=wrap.offsetWidth||340,ch=wrap.offsetHeight||160;
+  const chars=H3D_TOWATER.split('');
+  const span=Math.max(28,Math.min(64,cw/8));
+  const startX=-((chars.length-1)*span)/2;
+  const fontSize=Math.max(28,Math.min(84,cw*0.17));
   
-  Object.entries(h3dTextMeta).forEach(([char,pos])=>{
-    const proj=h3dProject(pos.x-240,pos.y,pos.z,cw,ch);
+  chars.forEach((char,i)=>{
+    const x=startX+i*span;
+    const z=Math.sin((i+1)*0.7+h3dRotY*0.9)*12;
+    const proj=h3dProject(x,0,z,cw,ch);
     const depth=h3dDepthFade(proj.z);
-    const fontSize=Math.max(48,Math.min(96,cw*0.22));
     const div=document.createElement('div');
     div.style.position='absolute';
     div.style.left=proj.sx+'px';
@@ -68,24 +66,72 @@ function h3dInitText(){
   if(!wrap)return;
   wrap.style.position='relative';
   wrap.style.cursor='grab';
-  wrap.addEventListener('mousedown',e=>{
+  wrap.style.touchAction='none';
+  wrap.style.userSelect='none';
+  wrap.style.webkitUserSelect='none';
+
+  const beginDrag=(x,y,isTouch)=>{
     h3dDragging=true;
-    h3dLastX=e.clientX;
-    h3dLastY=e.clientY;
-    h3dVX=0;h3dVY=0;
+    h3dLastX=x;
+    h3dLastY=y;
+    h3dVX=0;
+    h3dVY=0;
+    h3dDragGain=isTouch?0.012:0.008;
     wrap.style.cursor='grabbing';
-  });
-  window.addEventListener('mousemove',e=>{
-    if(!h3dDragging)return;
-    const dx=(e.clientX-h3dLastX)*0.006;
-    const dy=(e.clientY-h3dLastY)*0.006;
-    h3dRotY+=dx;h3dRotX+=dy;
+  };
+
+  const moveDrag=(x,y)=>{
+    const dx=(x-h3dLastX)*h3dDragGain;
+    const dy=(y-h3dLastY)*h3dDragGain;
+    h3dRotY+=dx;
+    h3dRotX+=dy;
     h3dRotX=Math.max(-Math.PI/2.5,Math.min(Math.PI/2.5,h3dRotX));
-    h3dVX=dx;h3dVY=dy;
-    h3dLastX=e.clientX;h3dLastY=e.clientY;
+    h3dVX=dx;
+    h3dVY=dy;
+    h3dLastX=x;
+    h3dLastY=y;
     h3dRenderText();
+  };
+
+  const endDrag=()=>{
+    h3dDragging=false;
+    wrap.style.cursor='grab';
+  };
+
+  wrap.addEventListener('pointerdown',e=>{
+    beginDrag(e.clientX||0,e.clientY||0,e.pointerType==='touch');
+    if(wrap.setPointerCapture){
+      try{wrap.setPointerCapture(e.pointerId);}catch(_){/* no-op */}
+    }
+    e.preventDefault();
   });
-  window.addEventListener('mouseup',()=>{h3dDragging=false;wrap.style.cursor='grab'});
+
+  window.addEventListener('pointermove',e=>{
+    if(!h3dDragging)return;
+    moveDrag(e.clientX||0,e.clientY||0);
+    e.preventDefault();
+  },{passive:false});
+
+  window.addEventListener('pointerup',endDrag);
+  window.addEventListener('pointercancel',endDrag);
+  window.addEventListener('lostpointercapture',endDrag);
+
+  wrap.addEventListener('touchstart',e=>{
+    if(!e.touches||!e.touches.length)return;
+    const t=e.touches[0];
+    beginDrag(t.clientX,t.clientY,true);
+    e.preventDefault();
+  },{passive:false});
+
+  wrap.addEventListener('touchmove',e=>{
+    if(!h3dDragging||!e.touches||!e.touches.length)return;
+    const t=e.touches[0];
+    moveDrag(t.clientX,t.clientY);
+    e.preventDefault();
+  },{passive:false});
+
+  wrap.addEventListener('touchend',endDrag);
+  wrap.addEventListener('touchcancel',endDrag);
   
   function h3dTextFrame(){
     if(!h3dDragging){
