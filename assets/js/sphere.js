@@ -1,18 +1,35 @@
 /* ── SPHERE: 2D projection, no CSS preserve-3d ── */
 const SPH_R=155, SPH_PERSP=750;
+const SPH_SIZE={
+  maxRadius:155,
+  radiusFactor:0.3,
+  minScale:0.42,
+};
 const sphWrap=document.getElementById('sph-wrap');
 const sphCanvas=document.getElementById('sph-canvas');
 const sphCtx=sphCanvas.getContext('2d');
 const sphLabels=document.getElementById('sph-labels');
+const sphExpandBtn=document.getElementById('sph-expand-btn');
+const sphCloseBtn=document.getElementById('sph-close-btn');
+const sphMobileBackdrop=document.getElementById('sph-mobile-backdrop');
 let sphW,sphH,sphCX,sphCY;
 let sphScale=1;
+
+function sphComputeScale(width,height){
+  const minSide=Math.min(width,height);
+  const targetR=Math.min(SPH_SIZE.maxRadius,minSide*SPH_SIZE.radiusFactor);
+  return Math.max(SPH_SIZE.minScale,targetR/SPH_R);
+}
+
+function sphRenderRadius(){
+  return SPH_R*sphScale;
+}
 
 function sphResize(){
   sphW=sphWrap.offsetWidth||480; sphH=sphWrap.offsetHeight||480;
   sphCanvas.width=sphW; sphCanvas.height=sphH;
   sphCX=sphW/2; sphCY=sphH/2;
-  const targetR=Math.min(155,Math.min(sphW,sphH)*0.34);
-  sphScale=Math.max(0.6,targetR/SPH_R);
+  sphScale=sphComputeScale(sphW,sphH);
 }
 sphResize();
 window.addEventListener('resize',sphResize,{passive:true});
@@ -161,9 +178,10 @@ function sphFrame(ts){
 
   /* Draw mesh on canvas */
   sphCtx.clearRect(0,0,sphW,sphH);
+  const renderR=sphRenderRadius();
   sphEdges.forEach(([a,b])=>{
     const pa=proj[a],pb=proj[b];
-    const t=((pa.z+pb.z)/2+SPH_R)/(2*SPH_R);
+    const t=((pa.z+pb.z)/2+renderR)/(2*renderR);
     sphCtx.beginPath();
     sphCtx.moveTo(pa.sx,pa.sy);
     sphCtx.lineTo(pb.sx,pb.sy);
@@ -174,7 +192,7 @@ function sphFrame(ts){
 
   /* Position tile divs */
   proj.forEach(({sx,sy,z,s,n})=>{
-    const depth=(z+SPH_R)/(2*SPH_R); // 0=back, 1=front
+    const depth=(z+renderR)/(2*renderR); // 0=back, 1=front
     /* Tangent rotation — makes tiles appear to lie on sphere surface */
     const{x:tx,y:ty}=sphRotPt(
       -Math.sin(n.theta)*Math.sin(n.phi),
@@ -288,4 +306,46 @@ function hideSphPopup(){
   document.getElementById('sph-popup').classList.remove('vis');
   document.getElementById('sph-svg').innerHTML='';
 }
+
+function sphSetMobileOpen(open){
+  const next=Boolean(open);
+  document.body.classList.toggle('sph-mobile-open',next);
+  if(sphExpandBtn)sphExpandBtn.setAttribute('aria-expanded',next?'true':'false');
+  if(sphMobileBackdrop)sphMobileBackdrop.setAttribute('aria-hidden',next?'false':'true');
+  hideSphPopup();
+  requestAnimationFrame(()=>{
+    sphResize();
+  });
+}
+
+if(sphExpandBtn){
+  sphExpandBtn.addEventListener('click',()=>{
+    sphSetMobileOpen(true);
+  });
+}
+
+if(sphCloseBtn){
+  sphCloseBtn.addEventListener('click',()=>{
+    sphSetMobileOpen(false);
+  });
+}
+
+if(sphMobileBackdrop){
+  sphMobileBackdrop.addEventListener('click',()=>{
+    sphSetMobileOpen(false);
+  });
+}
+
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.body.classList.contains('sph-mobile-open')){
+    sphSetMobileOpen(false);
+  }
+});
+
+window.addEventListener('resize',()=>{
+  if(window.innerWidth>960&&document.body.classList.contains('sph-mobile-open')){
+    sphSetMobileOpen(false);
+  }
+},{passive:true});
+
 window.addEventListener('mouseup',()=>{dragging=false;hideSphPopup();});

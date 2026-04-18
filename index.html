@@ -238,9 +238,11 @@
       <h2>One system, many expressions.</h2>
       <p>From the outside, data engineering, invention, prototyping, immersive demos, and philosophy can look like separate worlds. Underneath, they all ask the same thing: can you see clearly enough to remove friction and build with care?</p>
       <p>Reliable data platforms, inclusive product design, strong documentation, immersive storytelling, and Zen Bones all point me toward the same values — clarity, usefulness, and systems that treat people well.</p>
+      <button class="sph-mobile-ctl" id="sph-expand-btn" type="button" aria-controls="sph-wrap" aria-expanded="false">Expand Sphere</button>
       <p class="sph-hint">↻ Drag to spin · Hold tile to explore</p>
     </div>
     <div class="sph-wrap reveal d2 vis" id="sph-wrap">
+      <button class="sph-mobile-close" id="sph-close-btn" type="button" aria-label="Close expanded sphere">Close</button>
       <canvas id="sph-canvas"></canvas>
       <div id="sph-labels"></div>
     </div>
@@ -361,6 +363,7 @@
 <script src="assets/js/sphere.js"></script>
 <script src="assets/js/forms.js"></script>
 <!-- Popup and SVG overlay — position:fixed, renders above everything -->
+<div id="sph-mobile-backdrop" class="sph-mobile-backdrop" aria-hidden="true"></div>
 <svg id="sph-svg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9000;overflow:visible;"></svg>
 <div id="sph-popup" class="sph-popup">
   <div class="sph-popup-img" id="sph-popup-img"><div class="sph-popup-img-placeholder" id="sph-popup-placeholder">Loading…</div></div>
