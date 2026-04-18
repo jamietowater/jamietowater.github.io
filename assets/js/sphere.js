@@ -12,6 +12,8 @@ const sphLabels=document.getElementById('sph-labels');
 const sphExpandBtn=document.getElementById('sph-expand-btn');
 const sphCloseBtn=document.getElementById('sph-close-btn');
 const sphMobileBackdrop=document.getElementById('sph-mobile-backdrop');
+const sphPresetRoot=document.getElementById('sph-presets');
+const SPH_PRESET_STORAGE_KEY='sph-feel-preset';
 let sphW,sphH,sphCX,sphCY;
 let sphScale=1;
 
@@ -35,7 +37,7 @@ sphResize();
 window.addEventListener('resize',sphResize,{passive:true});
 
 const TILE_INFO={
-  'Jamie Towater': {desc:'Senior Developer, aspiring data engineer, inventor, and systems thinker based in Nashville, Tennessee.',tag:'Identity'},
+  'Jamie Towater': {desc:'Senior Developer,data engineer, inventor, and systems thinker based in Nashville, Tennessee.',tag:'Identity'},
   'Data Engineering': {desc:'The center of gravity in my career: reliable pipelines, scalable design, clean transformations, and practical delivery.',tag:'Career'},
   'SQL Server': {desc:'Core platform for most of my career — administration, tuning, automation, modeling, and production support across multiple versions.',tag:'Database'},
   'Snowflake': {desc:'Cloud analytics platform where I focused on performance-minded design and real cost reduction through smarter modeling.',tag:''},
@@ -88,73 +90,240 @@ const RING_DEFS=[
   {phi:Math.PI, labels:["Nashville, TN"]},
 ];
 
-/* Build nodes and edge lists */
+/* Build nodes and edge lists (Fibonacci distribution + nearest-neighbor mesh) */
 const sphNodes=[], sphEdges=[];
-RING_DEFS.forEach(({phi,labels},ri)=>{
-  const count=labels.length;
-  const rStart=sphNodes.length;
-  labels.forEach((txt,j)=>{
-    const tOff=(ri%2===1&&count>1)?(Math.PI/count):0;
-    const theta=count===1?0:(j/count)*Math.PI*2+tOff;
-    const ox=SPH_R*Math.sin(phi)*Math.cos(theta);
-    const oy=-SPH_R*Math.cos(phi);
-    const oz=SPH_R*Math.sin(phi)*Math.sin(theta);
-    /* Tile div */
-    const div=document.createElement('div');
-    div.className='sph-tile';
-    div.textContent=txt;
-    div.addEventListener('mousedown',e=>{
-      e.stopPropagation();e.preventDefault();
-      dragging=false;
-      const {sx,sy}=sphProject(ox,oy,oz);
-      const wr=sphWrap.getBoundingClientRect();
-      showSphPopup(txt, wr.left+sx, wr.top+sy);
-    });
-    sphLabels.appendChild(div);
-    sphNodes.push({ox,oy,oz,phi,theta,div,txt});
+const SPH_GOLDEN=Math.PI*(3-Math.sqrt(5));
+const SPH_FEEL={
+  neighbors:3,
+  dragGain:1.08,
+  spinMax:0.012,
+  spinDecay:0.978,
+  spinCutoff:0.000006,
+  autoYaw:0.00052,
+  autoWobble:0.16,
+  autoPitchAmp:0.00012,
+  arcballRadius:0.5,
+};
+const SPH_PRESETS={
+  calm:{
+    neighbors:2,
+    dragGain:0.92,
+    spinMax:0.008,
+    spinDecay:0.982,
+    spinCutoff:0.000004,
+    autoYaw:0.00036,
+    autoWobble:0.12,
+    autoPitchAmp:0.00008,
+    arcballRadius:0.52,
+  },
+  balanced:{
+    neighbors:3,
+    dragGain:1.08,
+    spinMax:0.012,
+    spinDecay:0.978,
+    spinCutoff:0.000006,
+    autoYaw:0.00052,
+    autoWobble:0.16,
+    autoPitchAmp:0.00012,
+    arcballRadius:0.5,
+  },
+  dynamic:{
+    neighbors:4,
+    dragGain:1.2,
+    spinMax:0.016,
+    spinDecay:0.972,
+    spinCutoff:0.000008,
+    autoYaw:0.00068,
+    autoWobble:0.2,
+    autoPitchAmp:0.00016,
+    arcballRadius:0.48,
+  },
+};
+let sphPresetName='balanced';
+const SPH_LABELS=RING_DEFS.flatMap(r=>r.labels);
+
+function sphSyncPresetUI(){
+  if(!sphPresetRoot)return;
+  sphPresetRoot.querySelectorAll('[data-sph-preset]').forEach(btn=>{
+    const active=btn.dataset.sphPreset===sphPresetName;
+    btn.classList.toggle('is-active',active);
+    btn.setAttribute('aria-pressed',active?'true':'false');
   });
-  /* Latitude ring edges */
-  if(count>1) for(let j=0;j<count;j++) sphEdges.push([rStart+j,rStart+(j+1)%count]);
-  /* Meridian edges to previous ring */
-  if(ri>0){
-    const c1=RING_DEFS[ri-1].labels.length;
-    const r1=rStart-c1;
-    const used=new Set();
-    const addE=(a,b)=>{const k=Math.min(a,b)+','+Math.max(a,b);if(!used.has(k)){used.add(k);sphEdges.push([a,b]);}};
-    if(c1===1){for(let j=0;j<count;j++)addE(r1,rStart+j);}
-    else if(count===1){for(let j=0;j<c1;j++)addE(r1+j,rStart);}
-    else{
-      for(let j=0;j<count;j++){
-        const ta=sphNodes[rStart+j].theta;
-        let best=0,bd=Infinity;
-        for(let k=0;k<c1;k++){let d=Math.abs(ta-sphNodes[r1+k].theta);if(d>Math.PI)d=2*Math.PI-d;if(d<bd){bd=d;best=k;}}
-        addE(rStart+j,r1+best);
-      }
-      for(let k=0;k<c1;k++){
-        const ta=sphNodes[r1+k].theta;
-        let best=0,bd=Infinity;
-        for(let j=0;j<count;j++){let d=Math.abs(ta-sphNodes[rStart+j].theta);if(d>Math.PI)d=2*Math.PI-d;if(d<bd){bd=d;best=j;}}
-        addE(r1+k,rStart+best);
-      }
-    }
+}
+
+function sphApplyPreset(name){
+  const preset=SPH_PRESETS[name];
+  if(!preset)return;
+  sphPresetName=name;
+  Object.assign(SPH_FEEL,preset);
+  sphBuildEdges(SPH_FEEL.neighbors);
+  sphSyncPresetUI();
+  sphPersistPreset(name);
+}
+
+function sphPersistPreset(name){
+  try{window.localStorage.setItem(SPH_PRESET_STORAGE_KEY,name);}catch(_){/* no-op */}
+}
+
+function sphLoadPreset(){
+  try{
+    const saved=window.localStorage.getItem(SPH_PRESET_STORAGE_KEY);
+    if(saved&&SPH_PRESETS[saved])return saved;
+  }catch(_){/* no-op */}
+  return sphPresetName;
+}
+
+function sphBindPresetUI(){
+  if(!sphPresetRoot)return;
+  sphPresetRoot.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-sph-preset]');
+    if(!btn)return;
+    sphApplyPreset(btn.dataset.sphPreset);
+  });
+}
+
+function sphNorm(v){
+  const m=Math.hypot(v.x,v.y,v.z)||1;
+  return{x:v.x/m,y:v.y/m,z:v.z/m};
+}
+
+SPH_LABELS.forEach((txt,i)=>{
+  const n=SPH_LABELS.length;
+  const t=n===1?0.5:i/(n-1);
+  const y=1-2*t;
+  const r=Math.sqrt(Math.max(0,1-y*y));
+  const theta=SPH_GOLDEN*i;
+  const nx=Math.cos(theta)*r;
+  const ny=y;
+  const nz=Math.sin(theta)*r;
+  const ox=SPH_R*nx;
+  const oy=-SPH_R*ny;
+  const oz=SPH_R*nz;
+  const normal=sphNorm({x:ox,y:oy,z:oz});
+  let tangent=sphNorm({x:-normal.z,y:0,z:normal.x});
+  if(Math.hypot(tangent.x,tangent.y,tangent.z)<0.01){
+    tangent=sphNorm({x:0,y:-normal.z,z:normal.y});
   }
+
+  /* Tile div */
+  const div=document.createElement('div');
+  div.className='sph-tile';
+  div.textContent=txt;
+  const node={ox,oy,oz,div,txt,tangent};
+  div.addEventListener('mousedown',e=>{
+    e.stopPropagation();e.preventDefault();
+    dragging=false;
+    const {sx,sy}=sphProject(node.ox,node.oy,node.oz);
+    const wr=sphWrap.getBoundingClientRect();
+    showSphPopup(txt, wr.left+sx, wr.top+sy);
+  });
+  sphLabels.appendChild(div);
+  sphNodes.push(node);
 });
 
-/* Rotation state */
-let sphRotX=0.22,sphRotY=0,sphVX=0,sphVY=0;
-let dragging=false,lastMx=0,lastMy=0;
-let hovering=false,sphLastT=null,sphElapsed=0;
-const SPH_AUTO=0.00062;
+function sphBuildEdges(neighbors){
+  sphEdges.length=0;
+  const edgeSet=new Set();
+  const addEdge=(a,b)=>{
+    if(a===b)return;
+    const lo=Math.min(a,b),hi=Math.max(a,b);
+    const key=lo+','+hi;
+    if(edgeSet.has(key))return;
+    edgeSet.add(key);
+    sphEdges.push([lo,hi]);
+  };
 
-function sphRotPt(ox,oy,oz){
-  const cy=Math.cos(sphRotY),sy=Math.sin(sphRotY);
-  const x1=ox*cy+oz*sy,z1=-ox*sy+oz*cy;
-  const cx=Math.cos(sphRotX),sx=Math.sin(sphRotX);
-  return{x:x1,y:oy*cx-z1*sx,z:oy*sx+z1*cx};
+  for(let i=0;i<sphNodes.length;i++){
+    if(i<sphNodes.length-1)addEdge(i,i+1);
+    const near=[];
+    for(let j=0;j<sphNodes.length;j++){
+      if(i===j)continue;
+      const dx=sphNodes[i].ox-sphNodes[j].ox;
+      const dy=sphNodes[i].oy-sphNodes[j].oy;
+      const dz=sphNodes[i].oz-sphNodes[j].oz;
+      near.push({j,d:dx*dx+dy*dy+dz*dz});
+    }
+    near.sort((a,b)=>a.d-b.d);
+    const nCount=Math.min(neighbors,near.length);
+    for(let k=0;k<nCount;k++)addEdge(i,near[k].j);
+  }
+}
+sphBuildEdges(SPH_FEEL.neighbors);
+
+/* Rotation state */
+let dragging=false;
+let hovering=false,sphLastT=null,sphElapsed=0;
+let sphRotM=[1,0,0,0,1,0,0,0,1];
+let sphQ={w:1,x:0,y:0,z:0};
+let sphDragVec=null;
+let sphDragT=0;
+let sphSpinAxis={x:0,y:1,z:0};
+let sphSpinVel=0;
+
+function sphQuatNorm(q){
+  const m=Math.hypot(q.w,q.x,q.y,q.z)||1;
+  return{w:q.w/m,x:q.x/m,y:q.y/m,z:q.z/m};
+}
+
+function sphQuatMul(a,b){
+  return{
+    w:a.w*b.w-a.x*b.x-a.y*b.y-a.z*b.z,
+    x:a.w*b.x+a.x*b.w+a.y*b.z-a.z*b.y,
+    y:a.w*b.y-a.x*b.z+a.y*b.w+a.z*b.x,
+    z:a.w*b.z+a.x*b.y-a.y*b.x+a.z*b.w,
+  };
+}
+
+function sphQuatFromAxisAngle(axis,ang){
+  const m=Math.hypot(axis.x,axis.y,axis.z)||1;
+  const s=Math.sin(ang/2)/m;
+  return{w:Math.cos(ang/2),x:axis.x*s,y:axis.y*s,z:axis.z*s};
+}
+
+function sphQuatApply(axis,ang){
+  if(Math.abs(ang)<1e-6)return;
+  const dq=sphQuatFromAxisAngle(axis,ang);
+  sphQ=sphQuatNorm(sphQuatMul(dq,sphQ));
+}
+
+function sphArcballVec(clientX,clientY){
+  const r=sphWrap.getBoundingClientRect();
+  const cx=r.left+r.width/2;
+  const cy=r.top+r.height/2;
+  const radius=Math.max(1,Math.min(r.width,r.height)*SPH_FEEL.arcballRadius);
+  const x=(clientX-cx)/radius;
+  const y=(cy-clientY)/radius;
+  const d=x*x+y*y;
+  if(d>1){
+    const m=Math.sqrt(d);
+    return{x:x/m,y:y/m,z:0};
+  }
+  return{x,y,z:Math.sqrt(1-d)};
+}
+
+function sphUpdateRotMatrix(){
+  const q=sphQ;
+  const xx=q.x*q.x,yy=q.y*q.y,zz=q.z*q.z;
+  const xy=q.x*q.y,xz=q.x*q.z,yz=q.y*q.z;
+  const wx=q.w*q.x,wy=q.w*q.y,wz=q.w*q.z;
+  sphRotM=[
+    1-2*(yy+zz),2*(xy-wz),2*(xz+wy),
+    2*(xy+wz),1-2*(xx+zz),2*(yz-wx),
+    2*(xz-wy),2*(yz+wx),1-2*(xx+yy),
+  ];
+}
+
+function sphApplyRot(ox,oy,oz){
+  const m=sphRotM;
+  return{
+    x:m[0]*ox+m[1]*oy+m[2]*oz,
+    y:m[3]*ox+m[4]*oy+m[5]*oz,
+    z:m[6]*ox+m[7]*oy+m[8]*oz,
+  };
 }
 
 function sphProject(ox,oy,oz){
-  const{x,y,z}=sphRotPt(ox*sphScale,oy*sphScale,oz*sphScale);
+  const{x,y,z}=sphApplyRot(ox*sphScale,oy*sphScale,oz*sphScale);
   const s=SPH_PERSP/(SPH_PERSP-z);
   return{sx:sphCX+x*s,sy:sphCY+y*s,z,s};
 }
@@ -165,13 +334,16 @@ function sphFrame(ts){
   sphLastT=ts;sphElapsed+=dt;
   if(!dragging){
     if(!hovering){
-      sphRotY+=SPH_AUTO*dt*(1+0.18*Math.sin(sphElapsed*0.00027));
-      sphRotX=0.22+0.11*Math.sin(sphElapsed*0.00041);
+      sphQuatApply({x:0,y:1,z:0},SPH_FEEL.autoYaw*dt*(1+SPH_FEEL.autoWobble*Math.sin(sphElapsed*0.00027)));
+      sphQuatApply({x:1,y:0,z:0},SPH_FEEL.autoPitchAmp*dt*Math.sin(sphElapsed*0.00041));
     }
-    sphVX*=0.96;sphVY*=0.96;
-    sphRotX+=sphVX;sphRotY+=sphVY;
-    sphRotX=Math.max(-Math.PI/2.2,Math.min(Math.PI/2.2,sphRotX));
+    if(sphSpinVel>SPH_FEEL.spinCutoff){
+      sphQuatApply(sphSpinAxis,sphSpinVel*dt);
+      sphSpinVel*=Math.pow(SPH_FEEL.spinDecay,dt/16);
+    }
   }
+
+  sphUpdateRotMatrix();
 
   /* Project all nodes */
   const proj=sphNodes.map((n,i)=>({i,...sphProject(n.ox,n.oy,n.oz),n}));
@@ -185,19 +357,19 @@ function sphFrame(ts){
     sphCtx.beginPath();
     sphCtx.moveTo(pa.sx,pa.sy);
     sphCtx.lineTo(pb.sx,pb.sy);
-    sphCtx.strokeStyle=`rgba(102,231,255,${(0.1+0.2*t).toFixed(2)})`;
-    sphCtx.lineWidth=0.8;
+    sphCtx.strokeStyle=`rgba(102,231,255,${(0.08+0.24*t).toFixed(2)})`;
+    sphCtx.lineWidth=0.55+0.75*t;
     sphCtx.stroke();
   });
 
   /* Position tile divs */
-  proj.forEach(({sx,sy,z,s,n})=>{
+  proj.forEach(({sx,sy,z,n})=>{
     const depth=(z+renderR)/(2*renderR); // 0=back, 1=front
     /* Tangent rotation — makes tiles appear to lie on sphere surface */
-    const{x:tx,y:ty}=sphRotPt(
-      -Math.sin(n.theta)*Math.sin(n.phi),
-      0,
-      Math.cos(n.theta)*Math.sin(n.phi)
+    const{x:tx,y:ty}=sphApplyRot(
+      n.tangent.x,
+      n.tangent.y,
+      n.tangent.z
     );
     /* Normalize so text never renders upside-down */
     let angle=Math.atan2(ty,tx);
@@ -216,17 +388,46 @@ function sphFrame(ts){
 
   requestAnimationFrame(sphFrame);
 }
+sphQuatApply({x:1,y:0,z:0},0.22);
+sphQuatApply({x:0,y:1,z:0},-0.12);
+sphApplyPreset(sphLoadPreset());
+sphBindPresetUI();
 requestAnimationFrame(sphFrame);
 
 /* Drag handlers */
-sphWrap.addEventListener('mousedown',e=>{dragging=true;lastMx=e.clientX;lastMy=e.clientY;sphVX=0;sphVY=0;e.preventDefault();});
+sphWrap.addEventListener('mousedown',e=>{
+  dragging=true;
+  sphDragVec=sphArcballVec(e.clientX,e.clientY);
+  sphDragT=performance.now();
+  sphSpinVel=0;
+  e.preventDefault();
+});
 window.addEventListener('mousemove',e=>{
   if(!dragging)return;
-  const dx=e.clientX-lastMx,dy=e.clientY-lastMy;
-  sphVY=dx*0.009;sphVX=dy*0.009;
-  sphRotY+=sphVY;sphRotX+=sphVX;
-  sphRotX=Math.max(-Math.PI/2.2,Math.min(Math.PI/2.2,sphRotX));
-  lastMx=e.clientX;lastMy=e.clientY;
+  const now=performance.now();
+  const curr=sphArcballVec(e.clientX,e.clientY);
+  if(!sphDragVec){
+    sphDragVec=curr;
+    sphDragT=now;
+    return;
+  }
+  const axis={
+    x:sphDragVec.y*curr.z-sphDragVec.z*curr.y,
+    y:sphDragVec.z*curr.x-sphDragVec.x*curr.z,
+    z:sphDragVec.x*curr.y-sphDragVec.y*curr.x,
+  };
+  const axisMag=Math.hypot(axis.x,axis.y,axis.z);
+  if(axisMag>1e-6){
+    const dot=Math.max(-1,Math.min(1,sphDragVec.x*curr.x+sphDragVec.y*curr.y+sphDragVec.z*curr.z));
+    const angle=Math.acos(dot)*SPH_FEEL.dragGain;
+    const normAxis={x:axis.x/axisMag,y:axis.y/axisMag,z:axis.z/axisMag};
+    sphQuatApply(normAxis,angle);
+    const dragDt=Math.max(now-sphDragT,1);
+    sphSpinAxis=normAxis;
+    sphSpinVel=Math.min(SPH_FEEL.spinMax,angle/dragDt);
+  }
+  sphDragVec=curr;
+  sphDragT=now;
 });
 sphWrap.addEventListener('mouseenter',()=>{hovering=true;});
 sphWrap.addEventListener('mouseleave',()=>{hovering=false;sphLastT=null;});
@@ -348,4 +549,4 @@ window.addEventListener('resize',()=>{
   }
 },{passive:true});
 
-window.addEventListener('mouseup',()=>{dragging=false;hideSphPopup();});
+window.addEventListener('mouseup',()=>{dragging=false;sphDragVec=null;hideSphPopup();});

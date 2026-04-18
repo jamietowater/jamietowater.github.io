@@ -3,6 +3,27 @@
 .sph-lay{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 .sph-txt h2{font-family:var(--font-d);font-size:clamp(30px,3.5vw,46px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:18px}
 .sph-txt p{color:var(--text2);font-size:15px;line-height:1.75;margin-bottom:14px}
+.sph-presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.sph-preset{
+  border:1px solid var(--border2);
+  background:rgba(18,20,22,.88);
+  color:var(--text3);
+  border-radius:999px;
+  padding:7px 11px;
+  font-family:var(--font-m);
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all .22s;
+}
+.sph-preset:hover{border-color:rgba(102,231,255,.36);color:var(--text)}
+.sph-preset.is-active{
+  border-color:rgba(102,231,255,.52);
+  background:rgba(102,231,255,.14);
+  color:var(--accent);
+  box-shadow:0 0 0 1px rgba(102,231,255,.18) inset;
+}
 .sph-mobile-ctl{display:none}
 .sph-hint{font-family:var(--font-m);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-top:22px}
 .sph-wrap{position:relative;width:min(84vw,480px);aspect-ratio:1/1;height:auto;margin:0 auto;cursor:grab;overflow:hidden;}
@@ -56,6 +77,9 @@ body.sph-mobile-open{overflow:hidden}
 body.sph-mobile-open .sph-mobile-backdrop{display:block}
 
 @media(max-width:960px){
+  .sph-presets{margin-top:10px}
+  .sph-preset{font-size:8.5px;padding:6px 10px;letter-spacing:.12em}
+
   .sph-mobile-ctl{
     display:inline-flex;
     align-items:center;
