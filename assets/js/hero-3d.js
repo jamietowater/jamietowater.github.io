@@ -38,19 +38,23 @@ function h3dRenderText(){
   const wrap=document.getElementById('hero-3d-towater');
   if(!wrap)return;
   wrap.innerHTML='';
-  const cw=wrap.offsetWidth||340,ch=wrap.offsetHeight||140;
+  const cw=wrap.offsetWidth||340,ch=wrap.offsetHeight||160;
   
   Object.entries(h3dTextMeta).forEach(([char,pos])=>{
     const proj=h3dProject(pos.x-240,pos.y,pos.z,cw,ch);
     const depth=h3dDepthFade(proj.z);
+    const fontSize=Math.max(48,Math.min(96,cw*0.22));
     const div=document.createElement('div');
     div.style.position='absolute';
     div.style.left=proj.sx+'px';
     div.style.top=proj.sy+'px';
     div.style.transform=`translate(-50%,-50%) scale(${depth})`;
-    div.style.font='96px var(--font-d)';
-    div.style.fontWeight='700';
-    div.style.color='var(--accent)';
+    div.style.fontFamily='var(--font-d)';
+    div.style.fontSize=fontSize+'px';
+    div.style.fontWeight='800';
+    div.style.lineHeight='0.9';
+    div.style.color='transparent';
+    div.style.webkitTextStroke='1.5px rgba(102,231,255,'+(0.5+0.5*depth).toFixed(2)+')';
     div.style.opacity=depth.toFixed(2);
     div.style.letterSpacing='-0.02em';
     div.style.userSelect='none';
@@ -96,26 +100,26 @@ function h3dInitText(){
 }
 
 /* ── 3D UFO RENDERER ── */
-let h3dUfoRotX=0.2,h3dUfoRotY=0,h3dUfoElapsed=0;
+let h3dUfoRotX=0.25,h3dUfoRotY=0,h3dUfoElapsed=0;
 
 function h3dRenderUFO(){
   const wrap=document.getElementById('hero-ufo');
   if(!wrap)return;
   wrap.innerHTML='';
-  const cw=wrap.offsetWidth||280,ch=wrap.offsetHeight||120;
+  const cw=wrap.offsetWidth||300,ch=wrap.offsetHeight||140;
   
   const ufoPoints=[
-    {x:-120,y:-8,z:0,r:8,c:'rgba(102,231,255,0.9)'},
-    {x:-60,y:-12,z:0,r:6,c:'rgba(102,231,255,0.8)'},
-    {x:0,y:-15,z:0,r:10,c:'rgba(180,240,255,1)'},
-    {x:60,y:-12,z:0,r:6,c:'rgba(102,231,255,0.8)'},
-    {x:120,y:-8,z:0,r:8,c:'rgba(102,231,255,0.9)'},
-    {x:-100,y:0,z:-50,r:12,c:'rgba(255,200,100,0.7)'},
-    {x:0,y:0,z:-80,r:15,c:'rgba(255,220,120,0.6)'},
-    {x:100,y:0,z:-50,r:12,c:'rgba(255,200,100,0.7)'},
-    {x:-80,y:12,z:20,r:9,c:'rgba(102,231,255,0.6)'},
-    {x:0,y:14,z:8,r:11,c:'rgba(102,231,255,0.7)'},
-    {x:80,y:12,z:20,r:9,c:'rgba(102,231,255,0.6)'},
+    {x:-140,y:-12,z:-20,r:9,c:'rgba(102,231,255,0.95)'},
+    {x:-70,y:-16,z:-30,r:7,c:'rgba(102,231,255,0.9)'},
+    {x:0,y:-20,z:-40,r:12,c:'rgba(200,255,255,1)'},
+    {x:70,y:-16,z:-30,r:7,c:'rgba(102,231,255,0.9)'},
+    {x:140,y:-12,z:-20,r:9,c:'rgba(102,231,255,0.95)'},
+    {x:-120,y:0,z:-60,r:14,c:'rgba(255,150,80,0.8)'},
+    {x:0,y:0,z:-100,r:18,c:'rgba(255,180,100,0.7)'},
+    {x:120,y:0,z:-60,r:14,c:'rgba(255,150,80,0.8)'},
+    {x:-100,y:16,z:0,r:11,c:'rgba(102,231,255,0.75)'},
+    {x:0,y:18,z:0,r:13,c:'rgba(102,231,255,0.8)'},
+    {x:100,y:16,z:0,r:11,c:'rgba(102,231,255,0.75)'},
   ];
   
   ufoPoints.forEach(pt=>{
@@ -131,7 +135,7 @@ function h3dRenderUFO(){
     div.style.borderRadius='50%';
     div.style.background=pt.c;
     div.style.transform=`translate(-50%,-50%)`;
-    div.style.boxShadow=`0 0 ${r}px ${pt.c}`;
+    div.style.boxShadow=`0 0 ${Math.max(4,r*0.8)}px ${pt.c},inset 0 0 ${r*0.3}px rgba(255,255,255,0.4)`;
     div.style.opacity=depth.toFixed(2);
     wrap.appendChild(div);
   });

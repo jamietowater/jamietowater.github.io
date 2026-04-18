@@ -5,9 +5,9 @@
 #hero-canvas{position:absolute;inset:0;z-index:0}
 .hero-noise{position:absolute;inset:0;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025}
 .hero-content{position:relative;z-index:1;max-width:100%;display:flex;flex-direction:column}
-.hero-3d-wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px}
-.hero-3d{min-height:140px;width:100%;max-width:340px}
-.hero-ufo{min-height:120px;width:100%;max-width:280px}
+.hero-3d-wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:40px}
+.hero-3d{min-height:160px;width:100%;max-width:100%}
+.hero-ufo{min-height:140px;width:100%;max-width:100%}
 .hero-pre{font-family:var(--font-m);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;opacity:0;animation:fU .8s .25s forwards}
 .hero-name{font-family:var(--font-d);font-size:clamp(48px,8.5vw,112px);font-weight:800;line-height:.9;letter-spacing:-.03em;color:var(--text);margin-bottom:24px;opacity:0;animation:fU .9s .45s forwards}
 .hero-name em{display:block;font-style:normal;color:transparent;-webkit-text-stroke:1.5px rgba(218,215,210,.18)}
