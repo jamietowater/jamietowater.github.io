@@ -8,7 +8,7 @@
   .about-in,.sph-lay,.con-in{grid-template-columns:1fr;gap:40px}
   .proj-grid{grid-template-columns:1fr}
   .pcard.feat{grid-column:span 1}
-  .sph-wrap{width:300px;height:300px}
+  .sph-wrap{width:min(62vw,280px)}
   .sk-grid{grid-template-columns:1fr 1fr;gap:20px}
   .int-grid{grid-template-columns:repeat(3,1fr)}
 }
@@ -22,14 +22,14 @@
   .proj-grid{gap:14px}
   .sk-grid{grid-template-columns:1fr}
   .int-grid{grid-template-columns:repeat(2,1fr)}
-  .sph-wrap{width:min(68vw,240px);height:min(68vw,240px)}
-  .sph-popup{width:min(74vw,220px)}
+  .sph-wrap{width:min(54vw,210px)}
+  .sph-popup{width:min(68vw,200px)}
   .status-bar{display:none}
 }
 
 @media(max-width:480px){
-  .sph-wrap{width:min(64vw,200px);height:min(64vw,200px)}
-  .sph-popup{width:min(72vw,190px)}
+  .sph-wrap{width:min(52vw,180px)}
+  .sph-popup{width:min(70vw,176px)}
   .sph-tile{font-size:9px;padding:2px 7px}
   .sph-hint{font-size:8.5px}
 }
