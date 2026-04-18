@@ -61,23 +61,23 @@ function buildHeroModel(){
   heroPts.length=0;
 
   // Companion-bot silhouette: body, head, ears, paws, harness, tail.
-  addEllipsoid(0,18,0,74,42,44,760);
-  addEllipsoid(0,-36,14,44,34,34,560);
-  addEllipsoid(0,-28,46,16,12,14,140);
-  addEllipsoid(-39,-48,7,11,26,9,190);
-  addEllipsoid(39,-48,7,11,26,9,190);
+  // addEllipsoid(0,18,0,74,42,44,760);
+  // addEllipsoid(0,-36,14,44,34,34,560);
+  // addEllipsoid(0,-28,46,16,12,14,140);
+  // addEllipsoid(-39,-48,7,11,26,9,190);
+  // addEllipsoid(39,-48,7,11,26,9,190);
 
-  addCylinder(-34,53,24,12,11,34,210);
-  addCylinder(34,53,24,12,11,34,210);
-  addCylinder(-34,53,-20,11,10,32,190);
-  addCylinder(34,53,-20,11,10,32,190);
+  // addCylinder(-34,53,24,12,11,34,210);
+  // addCylinder(34,53,24,12,11,34,210);
+  // addCylinder(-34,53,-20,11,10,32,190);
+  // addCylinder(34,53,-20,11,10,32,190);
 
-  addEllipsoid(-34,70,25,14,8,14,120);
-  addEllipsoid(34,70,25,14,8,14,120);
+  // addEllipsoid(-34,70,25,14,8,14,120);
+  // addEllipsoid(34,70,25,14,8,14,120);
 
-  addCylinder(0,24,43,20,7,22,190);
-  addCylinder(0,26,50,12,5,18,120);
-  addCylinder(57,28,-31,7,7,34,120);
+  // addCylinder(0,24,43,20,7,22,190);
+  // addCylinder(0,26,50,12,5,18,120);
+  // addCylinder(57,28,-31,7,7,34,120);
 
   modelMinY=Infinity;
   modelMaxY=-Infinity;

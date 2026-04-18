@@ -23,5 +23,13 @@
   .sk-grid{grid-template-columns:1fr}
   .int-grid{grid-template-columns:repeat(2,1fr)}
   .sph-wrap{width:260px;height:260px}
+  .sph-popup{width:220px}
   .status-bar{display:none}
+}
+
+@media(max-width:480px){
+  .sph-wrap{width:220px;height:220px}
+  .sph-popup{width:200px}
+  .sph-tile{font-size:9px;padding:2px 7px}
+  .sph-hint{font-size:8.5px}
 }
