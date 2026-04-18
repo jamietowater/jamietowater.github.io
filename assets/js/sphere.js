@@ -5,11 +5,14 @@ const sphCanvas=document.getElementById('sph-canvas');
 const sphCtx=sphCanvas.getContext('2d');
 const sphLabels=document.getElementById('sph-labels');
 let sphW,sphH,sphCX,sphCY;
+let sphScale=1;
 
 function sphResize(){
   sphW=sphWrap.offsetWidth||480; sphH=sphWrap.offsetHeight||480;
   sphCanvas.width=sphW; sphCanvas.height=sphH;
   sphCX=sphW/2; sphCY=sphH/2;
+  const targetR=Math.min(155,Math.min(sphW,sphH)*0.34);
+  sphScale=Math.max(0.6,targetR/SPH_R);
 }
 sphResize();
 window.addEventListener('resize',sphResize,{passive:true});
@@ -134,7 +137,7 @@ function sphRotPt(ox,oy,oz){
 }
 
 function sphProject(ox,oy,oz){
-  const{x,y,z}=sphRotPt(ox,oy,oz);
+  const{x,y,z}=sphRotPt(ox*sphScale,oy*sphScale,oz*sphScale);
   const s=SPH_PERSP/(SPH_PERSP-z);
   return{sx:sphCX+x*s,sy:sphCY+y*s,z,s};
 }
